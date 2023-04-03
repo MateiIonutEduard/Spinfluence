@@ -1,0 +1,102 @@
+﻿@using Spinfluence.Data;
+@using Spinfluence.Services;
+@inject ICompanyService companyService;
+
+@{
+    ViewData["Title"] = "Toate companiile";
+    Company[] companies = await companyService.GetCompaniesAsync();
+    int n = companies.Length;
+}
+<section>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <img src="~/images/internship.png" style="border: white 1px solid;" width="860" height="320" alt="Programe Internship"/>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</section><br /><br/><br/><br/>
+<section>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+
+            @if (n > 0)
+            {
+                <table class="table table-hover">
+                    <thead style="background-color: #668cc3; color: white;">
+                        <tr>
+                            <th>#</th>
+                            <th>Numele companiei</th>
+                            <th>Locuri de practica disponibile</th>
+                            <th>Aplicare</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #abc1e1;">
+                        @foreach(var company in companies) 
+                        {
+                            <tr>
+                                <td><img src="/Home/Profile/?id=@company.Id&isLogo=true" width="48" height="48" alt="@company.Name"/></td>
+                                <td>@company.Name</td>
+                                @if(company.Seats < 10)
+                                {
+                                    <td class="text-danger">
+                                        <b>@company.Seats</b>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td class="text-success">
+                                        <b>@company.Seats</b>
+                                    </td>
+                                }
+                                <td><a class="btn btn-success" href="/Home/About/?id=@company.Id">Vezi</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="d-flex align-items-center justify-content-center vh-100">
+                    <div class="text-center">
+                        <h1 class="display-1 fw-bold">404</h1>
+                        <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+                        <p class="lead">
+                            The page you’re looking for doesn’t exist.
+                        </p>
+                        <a href="/Home/" class="btn btn-primary">Go Home</a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-2"></div>
+    </div>
+</section>
+<section style="color: #232b2b;">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <p>
+                <br><br>
+                Îți oferim oportunitatea de a lucra într-o echipă de profesioniști prin intermediul programului nostru de internship pe care îl derulăm anual, în perioada <strong>iulie - septembrie 2023</strong>. <br>&#xFEFF;<br><strong>Ne adresăm studenților:</strong>
+                <br>•&nbsp;Care sunt în ani terminali - licență sau masterat din cadrul universităților cu profil tehnic și nu numai; <br>•&nbsp;Cu un nivel ridicat de motivație pentru dezvoltare profesională și personală;
+                <br>•&nbsp;Cu un istoric activ de implicare în proiecte\/concursuri academice\/programe de voluntariat;
+                <br>•&nbsp;Care manifestă curiozitate, ambiție și perseverență;
+                <br>•&nbsp;Cu dorință de învățare și contribuție la dezvoltarea durabilă a comunității în care trăiesc.
+                <br>&#xFEFF;<br><strong>Care sunt beneficiile participării în cadrul programului nostru de internship?</strong>
+                <br>•&nbsp;Acumularea experienței practice;
+                <br>•&nbsp;Obținerea unui venit suplimentar, stagiul de internship fiind plătit;
+                <br>•&nbsp;Alocarea unui mentor, expert în domeniu;
+                <br>•&nbsp;Acces la programe de dezvoltare profesională și personală;
+                <br>•&nbsp;Posibilitatea de fi implicat în proiecte provocatoare chiar de la început, cu impact direct în activitatea de zi cu zi;
+                <br>•&nbsp;Vei fi parte dintr-o comunitate de tineri aflați la început de carieră;
+                <br>•&nbsp;Program flexibil în sistem hibrid cu posibilitatea de a lucra de acasă;
+                <br>•&nbsp;Acces la instrumente de lucru și tehnologii de ultima generație;
+                <br>•&nbsp;Posibilitatea angajării la finalizarea stagiului de internship.
+                <br>&#xFEFF;<br>Specialiștii noștri te vor îndruma pe întreaga perioada a stagiului de internship, vei avea ocazia să te dezvolți personal și profesional, să te familiarizezi cu specificul și cultura organizațională și să înțelegi fluxul de activități din cadrul companiei noastre.
+            </p>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</section>

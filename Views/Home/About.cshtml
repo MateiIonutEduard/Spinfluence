@@ -1,0 +1,59 @@
+﻿@using Spinfluence.Data;
+@using Spinfluence.Services;
+@inject ICompanyService companyService;
+
+@{
+    string index = Context.Request.Query["id"];
+    int id = Convert.ToInt32(index);
+
+    Company? company = await companyService.GetCompanyAsync(id);
+    ViewData["Title"] = $"{company!.Name}";
+}
+
+<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <img src="/Home/Profile/?id=@id&isLogo=false" width="1024" height="320" alt="@company.Name" />
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section><br/>
+<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-4">
+                    <strong class="text-secondary">@company.Name</strong>
+                </div>
+                <div class="col-4">
+                    <label for="disponibil">Locuri disponibile</label>
+                    @if(company.Seats < 10)
+                    {
+                        <p class="text-danger" style="margin-left: 1%; font-weight: bold;">@company.Seats</p>
+                    }
+                    else
+                    {
+                        <p class="text-success" style="margin-left: 1%; font-weight: bold;">@company.Seats</p>
+                    }
+                </div>
+                <div class="col-1"></div>
+                <div class="col-3">
+                    <button class="btn btn-small btn-success">Aplica</button>
+                    <a href="/Home/" class="btn btn-small btn-secondary">Inapoi</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section><br />
+<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <small>@Html.Raw(company.Description)</small>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section>

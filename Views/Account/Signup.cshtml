@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Signup Page";
+    Layout = "~/Views/Account/AccountLayout.cshtml";
+}
+
+<br>
+<br>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/signup.js"></script>
+<br/><br/><br/>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <form class="form-signup" id="signup" method="post">
+            <img class="mb-4" src="/images/storm.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Register Account</h1>
+            <label for="name" class="sr-only">Username</label>
+            <input type="text" id="name" class="form-control" placeholder="Username" required autofocus><br/>
+            <label for="pass" class="sr-only">Password</label>
+            <input type="password" id="pass" class="form-control" placeholder="Password" required><br/>
+            <label for="address" class="sr-only">Email address</label>
+            <input type="email" id="address" class="form-control" placeholder="Email address" required autofocus><br>
+            <label id="sel" for="logo"><input type="file" id="logo" /><i class="fa fa-image text-info" aria-hidden="true"></i>&nbsp;Choose Image</label>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" id="admin" value=""> Admin account?
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            <button class="btn btn-lg btn-outline-dark btn-block" type="button" onclick="history.back()">Back</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+        </form>
+    </div>
+    <div class="col-1"></div>
+</div>

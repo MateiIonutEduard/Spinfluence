@@ -1,0 +1,27 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #b8a9d5;
+}
+
+.navbar {
+    background-color: #9c89c1 !important;
+}
+
+.footer {
+    background-color: #9c89c1;
+}
