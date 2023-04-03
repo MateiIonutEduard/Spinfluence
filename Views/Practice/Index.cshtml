@@ -4,10 +4,59 @@
 
 @{
     string? token = Context.Request.Cookies["token"];
-    PracticeEventModel[] list = new PracticeEventModel[0];
+    PracticeEventModel[] practiceEventList = new PracticeEventModel[0];
 
     if(!string.IsNullOrEmpty(token))
-        list = await practiceService.GetPracticesAsync(token);
+        practiceEventList = await practiceService.GetPracticesAsync(token);
 
-    int n = list.Length;
+    int n = practiceEventList.Length;
 }
+
+<section>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+
+            @if (n > 0)
+            {
+                <table class="table table-hover">
+                    <thead style="background-color: #668cc3; color: white;">
+                        <tr>
+                            <th>#</th>
+                            <th>Numele Evenimentului</th>
+                            <th>Numele Companiei</th>
+                            <th>Descriere</th>
+                            <th>Perioada</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #abc1e1;">
+                        @foreach (var practiceEvent in practiceEventList)
+                        {
+                            <tr>
+                                <td>@practiceEvent.Name</td>
+                                <td>@practiceEvent.CompanyName</td>
+                                <td>@practiceEvent.Body</td>
+                                <td>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</td>
+                                <td><a class="btn btn-danger" href="/Practice/RemovePractice/?id=@practiceEvent.PracticeId">Sterge</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="d-flex align-items-center justify-content-center vh-100">
+                    <div class="text-center">
+                        <h1 class="display-1 fw-bold">404</h1>
+                        <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+                        <p class="lead">
+                            The page you’re looking for doesn’t exist.
+                        </p>
+                        <a href="/Home/" class="btn btn-primary">Go Home</a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-2"></div>
+    </div>
+</section>
