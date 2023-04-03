@@ -20,7 +20,6 @@ namespace Spinfluence.Data
         public string logo { get; set; }
 
         public string token { get; set; }
-        public double? note { get; set; }
 
         [ForeignKey("AccountId")]
         public virtual ICollection<Practice> Practices { get; set; }
