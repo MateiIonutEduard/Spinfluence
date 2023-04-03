@@ -12,5 +12,8 @@ namespace Spinfluence.Data
         public int Seats { get; set; }
         public string LogoImage { get; set; }
         public string PosterImage { get; set; }
+
+        [ForeignKey("CompanyId")]
+        public virtual ICollection<CompanyEvent> CompanyEvents { get; set; }
     }
 }

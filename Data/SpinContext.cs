@@ -11,12 +11,14 @@ namespace Spinfluence.Data
 
         public DbSet<Account> Account { get; set; }
         public DbSet<Practice> Practice { get; set; }
+        public DbSet<CompanyEvent> CompanyEvent { get; set; }
         public DbSet<Company> Company { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>().ToTable("Account");
             modelBuilder.Entity<Practice>().ToTable("Practice");
+            modelBuilder.Entity<CompanyEvent>().ToTable("CompanyEvent");
             modelBuilder.Entity<Company>().ToTable("Company");
         }
     }

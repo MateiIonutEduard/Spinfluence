@@ -8,14 +8,12 @@ namespace Spinfluence.Data
     {
         public int Id { get; set; }
         public string Body { get; set; }
-
-        public DateTime BeginDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public bool IsCanceled { get; set; }
 
         public int AccountId { get; set; }
         public Account Account { get; set; }
 
-        public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public int CompanyEventId { get; set; }
+        public CompanyEvent CompanyEvent { get; set; }
     }
 }

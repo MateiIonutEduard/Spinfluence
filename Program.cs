@@ -40,6 +40,7 @@ namespace Spinfluence
 
             // Add services to the container.
             builder.Services.AddTransient<IAccountService, AccountService>();
+            builder.Services.AddTransient<IPracticeService, PracticeService>();
             builder.Services.AddTransient<ICompanyService, CompanyService>();
             builder.Services.AddControllersWithViews(); 
             var app = builder.Build();
