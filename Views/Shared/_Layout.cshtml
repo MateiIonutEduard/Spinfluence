@@ -8,8 +8,17 @@
     <link rel="stylesheet" href="~/css/spinfluence.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Spinfluence.styles.css" asp-append-version="true" />
 </head>
+@using Spinfluence.Data;
+@using Spinfluence.Services;
+
+@inject IAccountService accountService;
 @{
+    #pragma warning disable
     string? token = Context.Request.Cookies["token"];
+    dynamic obj = null;
+
+    if(!string.IsNullOrEmpty(token))
+        obj = accountService.About(token);
 }
 <body>
     <header>
@@ -33,14 +42,14 @@
                 @if (!string.IsNullOrEmpty(token))
                 {
                     <div class="dropdown">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown link
+                        <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/Account/Show/" width="32" height="32" style="border-radius: 50%;" /> <b style="color: #3b444b;">@obj.username</b>
                         </a>
 
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Add Companies</a></li>
-                            <li><a class="dropdown-item" href="#">My Internships</a></li>
-                            <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                            <li><a class="dropdown-item text-dark" href="#">Add Companies</a></li>
+                            <li><a class="dropdown-item text-dark" href="#">My Internships</a></li>
+                            <li><a class="dropdown-item text-dark" href="/Account/Signout">Sign Out</a></li>
                         </ul>
                     </div>
                 }
