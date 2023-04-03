@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
 using Spinfluence.Data;
 using Spinfluence.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Spinfluence.Services
 {
@@ -11,9 +12,9 @@ namespace Spinfluence.Services
         public PracticeService(SpinContext spinContext)
         { this.spinContext = spinContext; }
 
-        public async Task<Practice[]> GetPracticesAsync(string token)
+        public async Task<PracticeEventModel[]> GetPracticesAsync(string token)
         {
-            var list = new List<Practice>();
+            var list = new List<PracticeEventModel>();
 
             Account? account = await spinContext.Account.
                 FirstOrDefaultAsync(a => a.token.CompareTo(token) == 0);
@@ -23,8 +24,21 @@ namespace Spinfluence.Services
                 List<Practice>? practices = await spinContext.Practice.Where(p => p.AccountId == account.Id && !p.IsCanceled)
                     .ToListAsync();
 
+                PracticeEventModel[] events = (
+                    from p in practices join e in await spinContext.CompanyEvent.ToListAsync() on p.CompanyEventId equals e.Id join c in await spinContext.Company.ToListAsync()
+                    on e.CompanyId equals c.Id
+                    select new PracticeEventModel
+                    {
+                        Name = e.Name,
+                        PracticeId = p.Id,
+                        BeginDate = e.BeginDate,
+                        CompanyName = c.Name,
+                        EndDate = e.EndDate,
+                        Body = p.Body
+                    }).ToArray();
+
                 if(practices != null) 
-                    list.AddRange(practices);
+                    list.AddRange(events);
             }
 
             return list.ToArray();

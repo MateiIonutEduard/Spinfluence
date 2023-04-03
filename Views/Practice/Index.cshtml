@@ -1,0 +1,13 @@
+﻿@using Spinfluence.Data;
+@using Spinfluence.Services;
+@inject IPracticeService practiceService;
+
+@{
+    string? token = Context.Request.Cookies["token"];
+    PracticeEventModel[] list = new PracticeEventModel[0];
+
+    if(!string.IsNullOrEmpty(token))
+        list = await practiceService.GetPracticesAsync(token);
+
+    int n = list.Length;
+}
