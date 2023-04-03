@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="~/css/spinfluence.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Spinfluence.styles.css" asp-append-version="true" />
 </head>
+@{
+    string? token = Context.Request.Cookies["token"];
+}
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -27,6 +30,25 @@
                         </li>
                     </ul>
                 </div>
+                @if (!string.IsNullOrEmpty(token))
+                {
+                    <div class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown link
+                        </a>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li><a class="dropdown-item" href="#">Add Companies</a></li>
+                            <li><a class="dropdown-item" href="#">My Internships</a></li>
+                            <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="nav-link text-success" style="font-weight: bold;" href="/Account/Login">Sign In <i class="text-dark" style="font-weight: normal;">&nbsp;or</i></a>
+                    <a class="nav-link text-secondary" style="font-weight: bold; margin-left: -1%;" href="/Account/Signup">Sign Up</a>
+                }
             </div>
         </nav>
     </header>
