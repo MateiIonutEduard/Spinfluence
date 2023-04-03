@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Spinfluence.Models;
 using Spinfluence.Services;
 #pragma warning disable
 
@@ -14,6 +15,15 @@ namespace Spinfluence.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> AddPractice(PracticeModel practiceModel)
+        {
+            string? token = Request.Cookies["token"];
+            bool ok = await practiceService.AddPracticeAsync(practiceModel, token);
+
+            if (ok) return RedirectToAction("/Index");
+            return Redirect("/Account/Login");
         }
 
         [HttpDelete]

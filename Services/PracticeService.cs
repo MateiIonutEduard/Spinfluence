@@ -44,7 +44,7 @@ namespace Spinfluence.Services
             return list.ToArray();
         }
 
-        public async Task<bool?> AddPracticeAsync(PracticeModel practiceModel, string token)
+        public async Task<bool> AddPracticeAsync(PracticeModel practiceModel, string token)
         {
             Account? account = await spinContext.Account.
                 FirstOrDefaultAsync(a => a.token.CompareTo(token) == 0);
@@ -60,9 +60,11 @@ namespace Spinfluence.Services
                 };
 
                 spinContext.Practice.Add(practice);
+                await spinContext.SaveChangesAsync();
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         public async Task<int> CancelPracticeEventAsync(int practiceId, string token)
