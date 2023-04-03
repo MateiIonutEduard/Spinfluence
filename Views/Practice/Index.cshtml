@@ -13,20 +13,21 @@
 }
 
 <section>
+    <br/><br/><br/><br/>
     <div class="row">
-        <div class="col-2"></div>
-        <div class="col-8">
+        <div class="col-1"></div>
+        <div class="col-10">
 
             @if (n > 0)
             {
                 <table class="table table-hover">
                     <thead style="background-color: #668cc3; color: white;">
                         <tr>
-                            <th>#</th>
                             <th>Numele Evenimentului</th>
                             <th>Numele Companiei</th>
                             <th>Descriere</th>
                             <th>Perioada</th>
+                            <th>Actiuni</th>
                         </tr>
                     </thead>
                     <tbody style="background-color: #abc1e1;">
@@ -37,7 +38,7 @@
                                 <td>@practiceEvent.CompanyName</td>
                                 <td>@practiceEvent.Body</td>
                                 <td>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</td>
-                                <td><a class="btn btn-danger" href="/Practice/RemovePractice/?id=@practiceEvent.PracticeId">Sterge</a></td>
+                                <td><a class="btn btn-danger btn-sm" href="/Practice/RemovePractice/?id=@practiceEvent.PracticeId">Sterge</a></td>
                             </tr>
                         }
                     </tbody>
@@ -57,6 +58,6 @@
                 </div>
             }
         </div>
-        <div class="col-2"></div>
+        <div class="col-1"></div>
     </div>
 </section>
