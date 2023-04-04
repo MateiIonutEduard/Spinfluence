@@ -5,6 +5,7 @@ using Spinfluence.Models;
 using Spinfluence.Services;
 using System;
 using System.Diagnostics;
+#pragma warning disable
 
 namespace Spinfluence.Controllers
 {
@@ -24,6 +25,11 @@ namespace Spinfluence.Controllers
             return View();
         }
 
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Profile(int id, bool isLogo)
         {
             CompanyDetailsModel? company = await companyService.GetCompanyAsync(id);
@@ -34,18 +40,23 @@ namespace Spinfluence.Controllers
             return File(buffer, $"image/{filePath.Substring(index + 1)}");
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         public async Task<IActionResult> Create(CompanyModel companyModel)
         {
-            string header = HttpContext.Request.Headers["Authorization"];
-            string token = header.Split(' ')[1];
-            var account = await accountService.About(token);
+            string? token = HttpContext.Request.Cookies["token"];
 
-            if (account != null && account!.admin)
+            if (!string.IsNullOrEmpty(token))
             {
-                bool ok = await companyService.CreateCompanyAsync(companyModel);
-                if (ok) return RedirectToAction("/Index");
-                else return BadRequest();
+                var account = await accountService.About(token);
+
+                if (account != null && account!.admin)
+                {
+                    bool ok = await companyService.CreateCompanyAsync(companyModel);
+                    if (ok) return RedirectToAction("/Index");
+                    else return BadRequest();
+                }
+
+                return Forbid();
             }
 
             return Unauthorized();
