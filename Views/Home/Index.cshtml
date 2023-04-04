@@ -1,11 +1,19 @@
 ﻿@using Spinfluence.Data;
 @using Spinfluence.Services;
+
+@inject IAccountService accountService;
 @inject ICompanyService companyService;
 
 @{
     ViewData["Title"] = "Toate companiile";
     CompanyDetailsModel[] companies = await companyService.GetCompaniesAsync();
     int n = companies.Length;
+
+    string? token = Context.Request.Cookies["token"];
+    dynamic obj = null;
+
+    if (!string.IsNullOrEmpty(token))
+        obj = accountService.About(token);
 }
 <section>
     <div class="row">
@@ -38,7 +46,7 @@
                             <tr>
                                 <td><img src="/Home/Profile/?id=@company.Id&isLogo=true" width="48" height="48" alt="@company.Name"/></td>
                                 <td>@company.Name</td>
-                                @if (company.CompanyEvents < 5)
+                                @if (company.CompanyEvents < 10)
                                 {
                                     <td class="text-danger">
                                         <b>@company.CompanyEvents</b>
@@ -50,9 +58,20 @@
                                         <b>@company.CompanyEvents</b>
                                     </td>
                                 }
-                                <td><a class="btn btn-success btn-sm" style="margin-left: 10%; margin-top: 6%; border-radius: 50%;" href="/Home/About/?id=@company.Id">
+                                <td>
+                                    <a class="btn btn-success btn-sm" style="margin-left: 10%; margin-top: 6%; border-radius: 50%;" href="/Home/About/?id=@company.Id">
                                         <i class="fa fa-eye" style="color: #d8befb;" aria-hidden="true"></i>
-                                </a></td>
+                                    </a>
+                                    @if(obj != null && obj!.admin)
+                                    {
+                                        <a class="btn btn-sm" style="margin-top: 6%; border-radius: 50%; background-color: steelblue;" href="/Home/About/?id=@company.Id">
+                                            <i class="fas fa-edit" style="color: #d8befb;" aria-hidden="true"></i>
+                                        </a>
+                                        <a class="btn btn-sm" style="margin-top: 6%; border-radius: 50%; background-color: steelblue;" href="/Home/About/?id=@company.Id">
+                                            <i class="fa fa-trash" style="color: #d56464;" aria-hidden="true"></i>
+                                        </a>
+                                    }
+                                </td>
                             </tr>
                         }
                     </tbody>
