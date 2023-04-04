@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Spinfluence.Data;
 using Spinfluence.Models;
 using Spinfluence.Services;
@@ -9,10 +10,12 @@ namespace Spinfluence.Controllers
 {
     public class HomeController : Controller
     {
+        readonly IAccountService accountService;
         readonly ICompanyService companyService;
 
-        public HomeController(ICompanyService companyService)
+        public HomeController(IAccountService accountService, ICompanyService companyService)
         {
+            this.accountService = accountService;
             this.companyService = companyService;
         }
 
@@ -31,20 +34,38 @@ namespace Spinfluence.Controllers
             return File(buffer, $"image/{filePath.Substring(index + 1)}");
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> Create(CompanyModel companyModel)
         {
-            bool ok = await companyService.CreateCompanyAsync(companyModel);
-            if (ok) return RedirectToAction("/Index");
-            else return BadRequest();
+            string header = HttpContext.Request.Headers["Authorization"];
+            string token = header.Split(' ')[1];
+            var account = await accountService.About(token);
+
+            if (account != null && account!.admin)
+            {
+                bool ok = await companyService.CreateCompanyAsync(companyModel);
+                if (ok) return RedirectToAction("/Index");
+                else return BadRequest();
+            }
+
+            return Unauthorized();
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public async Task<IActionResult> RemoveCompany(int id)
         {
-            bool res = await companyService.RemoveCompanyAsync(id);
-            if (res) return Ok();
-            return NotFound();
+            string header = HttpContext.Request.Headers["Authorization"];
+            string token = header.Split(' ')[1];
+            var account = await accountService.About(token);
+
+            if (account != null && account!.admin)
+            {
+                bool res = await companyService.RemoveCompanyAsync(id);
+                if (res) return Ok();
+                return NotFound();
+            }
+
+            return Unauthorized();
         }
 
         public IActionResult About(int id)
