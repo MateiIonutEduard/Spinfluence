@@ -27,14 +27,16 @@ namespace Spinfluence.Services
                 PracticeEventModel[] events = (
                     from p in practices join e in await spinContext.CompanyEvent.ToListAsync() on p.CompanyEventId equals e.Id join c in await spinContext.Company.ToListAsync()
                     on e.CompanyId equals c.Id
+                    let counter = (from pr in practices join ev in spinContext.CompanyEvent.ToList() on pr.CompanyEventId equals ev.Id select pr).Count()
                     select new PracticeEventModel
                     {
                         Name = e.Name,
                         PracticeId = p.Id,
                         BeginDate = e.BeginDate,
+                        Seats = e.Seats - counter,
                         CompanyName = c.Name,
                         EndDate = e.EndDate,
-                        Body = p.Body
+                        Body = p.Body,
                     }).ToArray();
 
                 if(practices != null) 

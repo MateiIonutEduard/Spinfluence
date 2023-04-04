@@ -39,7 +39,7 @@ namespace Spinfluence.Services
                 {
                     Name = model.name,
                     Description = model.description,
-                    Seats = Convert.ToInt32(model.seats),
+                    //Seats = Convert.ToInt32(model.seats),
                     PosterImage = posterImage,
                     LogoImage = logoImage
                 };
@@ -52,16 +52,56 @@ namespace Spinfluence.Services
             return false;
         }
 
-        public async Task<Company[]> GetCompaniesAsync()
+        public async Task<CompanyDetailsModel[]> GetCompaniesAsync()
         {
-            List<Company> companies = await db.Company.ToListAsync();
+            List<CompanyDetailsModel> companies = 
+            (
+             from c in await db.Company.ToListAsync()
+             let counter = (from e in db.CompanyEvent.ToList() where e.CompanyId == c.Id select e).Count()
+             select new CompanyDetailsModel
+             {
+                 Id = c.Id,
+                 Name = c.Name,
+                 Description = c.Description,
+                 LogoImage = c.LogoImage,
+                 PosterImage = c.PosterImage,
+                 CompanyEvents = counter
+             }
+            ).ToList();
+
             return companies.ToArray();
         }
 
-        public async Task<Company?> GetCompanyAsync(int id)
+        public async Task<CompanyDetailsModel?> GetCompanyAsync(int id)
         {
             Company? company = await db.Company.FirstOrDefaultAsync(c => c.Id == id);
-            return company;
+
+            if (company != null)
+            {
+                var companyEvents = await db.CompanyEvent.Where(e => e.CompanyId == id)
+                    .ToListAsync();
+
+                int TotalSeats = companyEvents.Sum(e => e.Seats);
+
+                int Seats = (
+                    from p in await db.Practice.ToListAsync() 
+                    join e in companyEvents on p.CompanyEventId equals e.Id select p).Count();
+
+                CompanyDetailsModel companyDetailsModel = new CompanyDetailsModel
+                {
+                    Id = company.Id,
+                    Name = company.Name,
+                    Description = company.Description,
+                    LogoImage = company.LogoImage,
+                    PosterImage = company.PosterImage,
+                    CompanyEventList = companyEvents,
+                    CompanyEvents = TotalSeats - Seats
+                };
+
+                return companyDetailsModel;
+            }
+
+            return null;
         }
 
         public async Task<bool> RemoveCompanyAsync(int id)

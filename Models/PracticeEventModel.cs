@@ -12,5 +12,6 @@ namespace Spinfluence.Models
 
         public DateTime EndDate { get; set; }
         public string CompanyName { get; set; }
+        public int Seats { get; set; }
     }
 }

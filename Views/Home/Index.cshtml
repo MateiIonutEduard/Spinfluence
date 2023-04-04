@@ -4,7 +4,7 @@
 
 @{
     ViewData["Title"] = "Toate companiile";
-    Company[] companies = await companyService.GetCompaniesAsync();
+    CompanyDetailsModel[] companies = await companyService.GetCompaniesAsync();
     int n = companies.Length;
 }
 <section>
@@ -28,7 +28,7 @@
                         <tr>
                             <th>#</th>
                             <th>Numele companiei</th>
-                            <th>Locuri de practica disponibile</th>
+                            <th>Evenimente</th>
                             <th>Aplicare</th>
                         </tr>
                     </thead>
@@ -38,19 +38,21 @@
                             <tr>
                                 <td><img src="/Home/Profile/?id=@company.Id&isLogo=true" width="48" height="48" alt="@company.Name"/></td>
                                 <td>@company.Name</td>
-                                @if(company.Seats < 10)
+                                @if (company.CompanyEvents < 5)
                                 {
                                     <td class="text-danger">
-                                        <b>@company.Seats</b>
+                                        <b>@company.CompanyEvents</b>
                                     </td>
                                 }
                                 else
                                 {
                                     <td class="text-success">
-                                        <b>@company.Seats</b>
+                                        <b>@company.CompanyEvents</b>
                                     </td>
                                 }
-                                <td><a class="btn btn-success" href="/Home/About/?id=@company.Id">Vezi</a></td>
+                                <td><a class="btn btn-success btn-sm" style="margin-left: 10%; margin-top: 6%; border-radius: 50%;" href="/Home/About/?id=@company.Id">
+                                        <i class="fa fa-eye" style="color: #d8befb;" aria-hidden="true"></i>
+                                </a></td>
                             </tr>
                         }
                     </tbody>

@@ -23,7 +23,7 @@ namespace Spinfluence.Controllers
 
         public async Task<IActionResult> Profile(int id, bool isLogo)
         {
-            Company? company = await companyService.GetCompanyAsync(id);
+            CompanyDetailsModel? company = await companyService.GetCompanyAsync(id);
             string filePath = isLogo ? company!.LogoImage : company!.PosterImage;
 
             int index = filePath.LastIndexOf(".");

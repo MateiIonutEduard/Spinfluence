@@ -6,7 +6,7 @@
     string index = Context.Request.Query["id"];
     int id = Convert.ToInt32(index);
 
-    Company? company = await companyService.GetCompanyAsync(id);
+    CompanyDetailsModel? company = await companyService.GetCompanyAsync(id);
     ViewData["Title"] = $"{company!.Name}";
 }
 
@@ -28,14 +28,14 @@
                     <strong class="text-secondary">@company.Name</strong>
                 </div>
                 <div class="col-4">
-                    <label for="disponibil">Locuri disponibile</label>
-                    @if(company.Seats < 10)
+                    <label for="disponibil">Evenimente</label>
+                    @if (company.CompanyEvents < 4)
                     {
-                        <p class="text-danger" style="margin-left: 1%; font-weight: bold;">@company.Seats</p>
+                        <p class="text-danger" style="margin-left: 1%; font-weight: bold;">@company.CompanyEvents</p>
                     }
                     else
                     {
-                        <p class="text-success" style="margin-left: 1%; font-weight: bold;">@company.Seats</p>
+                        <p class="text-success" style="margin-left: 1%; font-weight: bold;">@company.CompanyEvents</p>
                     }
                 </div>
                 <div class="col-1"></div>

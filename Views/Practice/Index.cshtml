@@ -27,6 +27,7 @@
                             <th>Numele Companiei</th>
                             <th>Descriere</th>
                             <th>Perioada</th>
+                            <th>Locuri disponibile</th>
                             <th>Actiuni</th>
                         </tr>
                     </thead>
@@ -37,8 +38,12 @@
                                 <td>@practiceEvent.Name</td>
                                 <td>@practiceEvent.CompanyName</td>
                                 <td>@practiceEvent.Body</td>
-                                <td>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</td>
-                                <td><a class="btn btn-danger btn-sm" href="/Practice/RemovePractice/?id=@practiceEvent.PracticeId">Sterge</a></td>
+                                <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
+                                <td><center>@practiceEvent.Seats</center></td>
+                                <td>
+                                    <a class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" href="/Practice/RemovePractice/?id=@practiceEvent.PracticeId">
+                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                </a></td>
                             </tr>
                         }
                     </tbody>

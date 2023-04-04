@@ -10,6 +10,7 @@ namespace Spinfluence.Data
         public string Name { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int Seats { get; set; }
 
         [ForeignKey("CompanyEventId")]
         public virtual ICollection<Practice> Practices { get; set; }
