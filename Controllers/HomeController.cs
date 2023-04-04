@@ -39,6 +39,14 @@ namespace Spinfluence.Controllers
             else return BadRequest();
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> RemoveCompany(int id)
+        {
+            bool res = await companyService.RemoveCompanyAsync(id);
+            if (res) return Ok();
+            return NotFound();
+        }
+
         public IActionResult About(int id)
         {
             return View();
