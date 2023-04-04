@@ -39,7 +39,6 @@ namespace Spinfluence.Services
                 {
                     Name = model.name,
                     Description = model.description,
-                    //Seats = Convert.ToInt32(model.seats),
                     PosterImage = posterImage,
                     LogoImage = logoImage
                 };
@@ -78,14 +77,20 @@ namespace Spinfluence.Services
 
             if (company != null)
             {
-                var companyEvents = await db.CompanyEvent.Where(e => e.CompanyId == id)
-                    .ToListAsync();
+                var companyEvents = (from e in await db.CompanyEvent.Where(e => e.CompanyId == id)
+                    .ToListAsync() join p in await db.Practice.ToListAsync() on e.Id equals p.CompanyEventId
+                    let seatEvents = db.Practice.Where(p => p.CompanyEventId == e.Id).Count()
+                    select new CompanyEventModel
+                    {
+                        Id = e.Id,
+                        Name = e.Name,
+                        BeginDate = e.BeginDate,
+                        EndDate = e.EndDate,
+                        TotalSeats = e.Seats - seatEvents
+                    }
+                ).ToList();
 
-                int TotalSeats = companyEvents.Sum(e => e.Seats);
-
-                int Seats = (
-                    from p in await db.Practice.ToListAsync() 
-                    join e in companyEvents on p.CompanyEventId equals e.Id select p).Count();
+                int TotalSeats = companyEvents.Sum(e => e.TotalSeats);
 
                 CompanyDetailsModel companyDetailsModel = new CompanyDetailsModel
                 {
@@ -95,7 +100,7 @@ namespace Spinfluence.Services
                     LogoImage = company.LogoImage,
                     PosterImage = company.PosterImage,
                     CompanyEventList = companyEvents,
-                    CompanyEvents = TotalSeats - Seats
+                    CompanyEvents = TotalSeats
                 };
 
                 return companyDetailsModel;

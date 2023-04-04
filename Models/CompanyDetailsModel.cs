@@ -12,6 +12,6 @@ namespace Spinfluence.Models
         public string LogoImage { get; set; }
         public string PosterImage { get; set; }
         public int CompanyEvents { get; set; }
-        public List<CompanyEvent>? CompanyEventList { get; set; } 
+        public List<CompanyEventModel>? CompanyEventList { get; set; } 
     }
 }
