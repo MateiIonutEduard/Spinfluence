@@ -53,10 +53,11 @@ namespace Spinfluence.Services
 
         public async Task<CompanyDetailsModel[]> GetCompaniesAsync()
         {
-            List<CompanyDetailsModel> companies = 
+            List<CompanyDetailsModel> companies =
             (
              from c in await db.Company.ToListAsync()
-             let counter = (from e in db.CompanyEvent.ToList() where e.CompanyId == c.Id select e).Count()
+             let TotalSeats = (from e in db.CompanyEvent.ToList() where e.CompanyId == c.Id select e).Sum(e => e.Seats)
+             let practiceEventSeats = (from p in db.Practice.ToList() join e in db.CompanyEvent.ToList() on p.CompanyEventId equals e.Id where e.CompanyId == c.Id select p).Count()
              select new CompanyDetailsModel
              {
                  Id = c.Id,
@@ -64,7 +65,7 @@ namespace Spinfluence.Services
                  Description = c.Description,
                  LogoImage = c.LogoImage,
                  PosterImage = c.PosterImage,
-                 CompanyEvents = counter
+                 CompanyEvents = TotalSeats - practiceEventSeats
              }
             ).ToList();
 

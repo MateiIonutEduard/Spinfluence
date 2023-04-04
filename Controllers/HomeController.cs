@@ -69,11 +69,18 @@ namespace Spinfluence.Controllers
             string token = header.Split(' ')[1];
             var account = await accountService.About(token);
 
-            if (account != null && account!.admin)
+            if (account != null)
             {
-                bool res = await companyService.RemoveCompanyAsync(id);
-                if (res) return Ok();
-                return NotFound();
+                // admin account have the remove grant of company
+                if (account!.admin)
+                {
+                    bool res = await companyService.RemoveCompanyAsync(id);
+                    if (res) return Ok();
+                    return NotFound();
+                }
+
+                // forbid access for normal account
+                return Forbid();
             }
 
             return Unauthorized();
