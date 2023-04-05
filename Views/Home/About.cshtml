@@ -72,13 +72,19 @@
                     <tbody style="background-color: #abc1e1; border-color: #abc1e1;">
                         @foreach (var practiceEvent in company.CompanyEventList)
                         {
+                            DateTime now = DateTime.UtcNow.Date;
+                            bool isPastEvent = now.CompareTo(practiceEvent.BeginDate) > 0;
+
+                            // event has not started yet and are there enough places available?
+                            string className = (!isPastEvent && practiceEvent.TotalSeats > 0) ? "" : "disabled";
+
                             <tr>
                                 <td>@practiceEvent.Name</td>
                                 <td>@practiceEvent.TotalSeats</td>
                                 <td><small>@practiceEvent.BeginDate.ToString("dd/MM/yyyy")</small></td>
                                 <td><small>@practiceEvent.EndDate.ToString("dd/MM/yyyy")</small></td>
                                 <td>
-                                    <button class="btn btn-sm btn-success" style="margin-left: 25%;" data-bs-toggle="modal" data-bs-target="#practiceModal" onclick="AddPractice(@practiceEvent.Id)">
+                                    <button class="btn btn-sm btn-success @className" style="margin-left: 25%;" data-bs-toggle="modal" data-bs-target="#practiceModal" onclick="AddPractice(@practiceEvent.Id)">
                                         Aplica
                                     </button>
                                 </td>
