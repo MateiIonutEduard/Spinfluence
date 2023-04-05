@@ -1,36 +1,125 @@
-﻿<section>
+﻿@using Spinfluence.Data;
+@using Spinfluence.Services;
+@inject IAccountService accountService;
+@inject ICompanyService companyService;
+
+@{
+    #pragma warning disable
+    string? token = Context.Request.Cookies["token"];
+    CompanyDetailsModel? company = null;
+    dynamic obj = null;
+
+
+    if (!string.IsNullOrEmpty(token))
+    {
+        obj = accountService.About(token);
+        string index = Context.Request.Query["id"];
+        int id = -1;
+
+        if(!string.IsNullOrEmpty(index))
+        {
+            id = Convert.ToInt32(index);
+            company = await companyService.GetCompanyAsync(id);
+        }
+    }
+}
+<section>
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <form>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="mb-3">
-                            <label for="name" class="form-label"><b class="text-danger">*</b> Numele Companiei</label>
-                            <input class="form-control form-control-sm" id="name" name="name" type="text" required />
+            @if(company != null)
+            {
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <div class="mb-3">
+                                <label for="name" class="form-label"><b class="text-danger">*</b> Numele Companiei</label>
+                                <input class="form-control form-control-sm" id="name" name="name" type="text" value="@company.Name" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label"><b class="text-danger">*</b> Descriere Companie</label>
+                                <textarea class="form-control form-control-sm" id="description" name="description" rows="8" cols="10">@company.Description</textarea><br/>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label"><b class="text-danger">*</b> Descriere Companie</label>
-                            <textarea class="form-control form-control-sm" id="description" name="description" rows="8" cols="10"></textarea>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <h3 class="text-secondary">Evenimente</h3>
+                            <hr class="text-dark"/>
                         </div>
-                        <div class="mb-3">
-                            <label for="logoImage" class="form-label"><b class="text-danger">*</b> Logo Companie</label>
-                            <input class="form-control form-control-sm" id="logoImage" name="logoImage" type="file" required/>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile" />
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="posterImage" class="form-label"><b class="text-danger">*</b> Poster Companie</label>
-                            <input class="form-control form-control-sm" id="posterImage" name="posterImage" type="file" required/>
+                        <div class="col-2">
+                            <div class="row">
+                                <div class="col-2">
+                                    <a class="btn btn-primary btn-sm" style="border-radius: 50%; transform: scale(0.9);" onclick="AddTableEvent()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8"></div>
-                    <div class="col-2"></div>
-                </div>
-            </form>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <hr class="text-dark" /><br />
+                            <table class="table table-hover">
+                                <tbody style="background-color: #abc1e1;" id="body">
+                                    <!-- Append event objects dynamically here... -->
+                                @if (company.CompanyEventList != null && company.CompanyEventList.Count > 0)
+                                {
+                                    for (int k = 0; k < company.CompanyEventList.Count; k++)
+                                    {
+                                        <tr>
+                                            <td>@company.CompanyEventList[k].Name</td>
+                                            <td>@company.CompanyEventList[k].BeginDate.ToString("MM/dd/yyyy")</td>
+                                            <td>@company.CompanyEventList[k].EndDate.ToString("MM/dd/yyyy")</td>
+                                            <td>@company.CompanyEventList[k].TotalSeats</td>
+                                            <td><button class="btn text-danger" onclick="RemoveItem(@k)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                            </table>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col-2">
+                                <button class="btn btn-success" onclick="EditCompany()">Adauga</button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-secondary" onclick="GoHome()">Acasa</button>
+                                </div>
+                                <div class="col-4"></div>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+            } else {
+            }
         </div>
         <div class="col-1"></div>
     </div>
