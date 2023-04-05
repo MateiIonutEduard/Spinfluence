@@ -1,5 +1,37 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <form>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <div class="mb-3">
+                            <label for="name" class="form-label"><b class="text-danger">*</b> Numele Companiei</label>
+                            <input class="form-control form-control-sm" id="name" name="name" type="text" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label"><b class="text-danger">*</b> Descriere Companie</label>
+                            <textarea class="form-control form-control-sm" id="description" name="description" rows="8" cols="10"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="logoImage" class="form-label"><b class="text-danger">*</b> Logo Companie</label>
+                            <input class="form-control form-control-sm" id="logoImage" name="logoImage" type="file" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="posterImage" class="form-label"><b class="text-danger">*</b> Poster Companie</label>
+                            <input class="form-control form-control-sm" id="posterImage" name="posterImage" type="file" required/>
+                        </div>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8"></div>
+                    <div class="col-2"></div>
+                </div>
+            </form>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section>
