@@ -79,7 +79,7 @@ namespace Spinfluence.Services
             if (company != null)
             {
                 var companyEvents = (from e in await db.CompanyEvent.Where(e => e.CompanyId == id)
-                    .ToListAsync() join p in await db.Practice.ToListAsync() on e.Id equals p.CompanyEventId
+                    .ToListAsync() orderby e.BeginDate ascending
                     let seatEvents = db.Practice.Where(p => p.CompanyEventId == e.Id).Count()
                     select new CompanyEventModel
                     {
