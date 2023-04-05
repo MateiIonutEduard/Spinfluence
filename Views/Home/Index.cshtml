@@ -29,6 +29,34 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
+            <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="warningModalLabel">Admin Panel</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger">
+                                <i class="fa fa-exclamation-circle" style="color: white; background-color: lightcoral;" aria-hidden="true"></i> Doar un cont cu drept de administrare poate elimina companii!
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+<section>
+< br /><br /><br /><br />
+</section>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
 
             @if (n > 0)
             {

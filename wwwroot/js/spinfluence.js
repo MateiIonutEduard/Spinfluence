@@ -23,7 +23,7 @@ function RemoveCompany(id) {
                 location.href = "/Home/";
             },
             403: function () {
-
+                $('#warningModal').modal({ show: true });
             },
             401: function () {
                 location.href = "/Account/Login/";
