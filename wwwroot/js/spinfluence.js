@@ -3,6 +3,39 @@
     practiceId.value = CompanyEventId;
 }
 
+function RemoveCompany(id) {
+    let token = document.cookie.substring(6);
+
+    $.ajax({
+        url: `/Home/RemoveCompany/?id=${id}`,
+        type: 'delete',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        },
+        success: (data, status) => {
+            console.log('Company was removed successfully.');
+        },
+        statusCode: {
+            404: function () {
+                location.href = "/Home/";
+            },
+            200: function () {
+                location.href = "/Home/";
+            },
+            403: function () {
+
+            },
+            401: function () {
+                location.href = "/Account/Login/";
+            }
+        },
+        error: (e) => {
+            console.log(e);
+        },
+        async: true
+    });
+}
+
 function RemovePractice(id) {
     let token = document.cookie.substring(6);
 
@@ -13,14 +46,21 @@ function RemovePractice(id) {
             xhr.setRequestHeader("Authorization", `Bearer ${token}`);
         },
         success: (data, status) => {
-            if (this.status == 200)
-                location.href = "/Practice/";
-            else if (this.status == 401)
-                location.href = "/Account/Login/";
-            else location.href = "/Home/";
+            console.log("Student practice was canceled.");
         },
-        error: () => {
-            
+        statusCode: {
+            404: function () {
+                location.href = "/Home/";
+            },
+            200: function () {
+                location.href = "/Practice/";
+            },
+            401: function () {
+                location.href = "/Account/Login/";
+            }
+        },
+        error: (e) => {
+            console.log(e);
         },
         async: true
     });

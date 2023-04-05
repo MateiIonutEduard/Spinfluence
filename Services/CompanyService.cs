@@ -116,6 +116,30 @@ namespace Spinfluence.Services
             
             if(company != null)
             {
+                CompanyEvent[] companyEvents = await db.CompanyEvent.Where(e => e.Id == company.Id)
+                    .ToArrayAsync();
+
+                if(companyEvents.Length > 0)
+                {
+                    // for each company event, remove corresponding student practices
+                    foreach(CompanyEvent companyEvent in companyEvents)
+                    {
+                        Practice[] practices = await db.Practice.Where(p => p.CompanyEventId == companyEvent.Id)
+                            .ToArrayAsync();
+
+                        if(practices.Length > 0)
+                            db.Practice.RemoveRange(practices);
+                    }
+
+                    // remove company events
+                    db.CompanyEvent.RemoveRange(companyEvents);
+                }
+
+                // remove logo and poster image
+                File.Delete(company.LogoImage);
+                File.Delete(company.PosterImage);
+
+                // last step, remove the company
                 db.Company.Remove(company);
                 await db.SaveChangesAsync();
                 return true;

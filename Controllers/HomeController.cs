@@ -67,7 +67,7 @@ namespace Spinfluence.Controllers
         {
             string header = HttpContext.Request.Headers["Authorization"];
             string token = header.Split(' ')[1];
-            var account = await accountService.About(token);
+            var account = accountService.About(token);
 
             if (account != null)
             {
