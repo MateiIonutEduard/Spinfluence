@@ -9,6 +9,35 @@ function GoHome() {
     location.href = '/Home/';
 }
 
+function AddEvent() {
+    let obj = {
+        name: $('#eventName').val(),
+        beginDate: $('#eventBeginDate').val(),
+        endDate: $('#eventEndDate').val(),
+        seats: $('#eventSeats').val()
+    };
+
+    // append html container to table body
+    $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+    list.push(obj);
+
+    $('#eventName').val('');
+    $('#eventBeginDate').val('');
+
+    $('#eventEndDate').val('');
+    $('#eventSeats').val('');
+}
+
+function RemoveEvent(id) {
+    if (list.length) {
+        list.splice(id, 1);
+        $('#body').empty();
+
+        for (let k = 0; k < list.length; k++)
+            $('#body').append(`<tr><td>${list[k].name}</td><td>${list[k].beginDate}</td><td>${list[k].endDate}</td><td>${list[k].seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${k})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+    }
+}
+
 function AddChilds() {
     let childs = $("#body").children();
     
@@ -69,7 +98,7 @@ function RemoveItem(id) {
         $('#body').empty();
 
         for (let k = 0; k < list.length; k++)
-            $('#body').append(`<tr><td>${list[k].name}</td><td>${list[k].beginDate}</td><td>${list[k].endDate}</td><td>${list[k].seats}</td><td><button class='btn text-danger' onclick='RemoveItem('${k}')'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+            $('#body').append(`<tr><td>${list[k].name}</td><td>${list[k].beginDate}</td><td>${list[k].endDate}</td><td>${list[k].seats}</td><td><button class='btn text-danger' onclick='RemoveItem(${k})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
     }
 }
 
@@ -84,7 +113,7 @@ function AddTableEvent() {
     };
 
     // append html container to table body
-    $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem('${list.length}')'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+    $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
 
     list.push(obj);
     console.log(list);
