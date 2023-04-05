@@ -8,5 +8,6 @@ namespace Spinfluence.Models
         public string description { get; set; }
         public IFormFile logoImage { get; set; }
         public IFormFile posterImage { get; set; }
+        public string? entries { get; set; }
     }
 }

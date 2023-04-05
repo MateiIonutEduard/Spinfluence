@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Spinfluence.Data;
 using Spinfluence.Models;
-using System;
+#pragma warning disable
 
 namespace Spinfluence.Services
 {
@@ -12,7 +14,7 @@ namespace Spinfluence.Services
         public CompanyService(SpinContext db)
         { this.db = db; }
 
-        public async Task<bool> CreateCompanyAsync(CompanyModel model)
+        public async Task<int> CreateCompanyAsync(CompanyModel model)
         {
             string logoImage = string.Empty;
             string posterImage = string.Empty;
@@ -45,10 +47,58 @@ namespace Spinfluence.Services
 
                 db.Company.Add(company);
                 await db.SaveChangesAsync();
-                return true;
+                return 0;
             }
+            else
+            {
+                Company? company = await db.Company.FirstOrDefaultAsync(c => c.Name.CompareTo(model.name) == 0);
+                CompanyEventEntry[]? entries = JsonConvert.DeserializeObject<CompanyEventEntry[]>(model.entries);
 
-            return false;
+                if(company != null)
+                {
+                    if (company.Description.CompareTo(model.description) != 0)
+                    {
+                        company.Description = model.description;
+                        await db.SaveChangesAsync();
+                    }
+
+                    if (entries != null && entries.Length > 0)
+                    {
+                        foreach (CompanyEventEntry entry in entries)
+                        {
+                            CompanyEvent? companyEvent = await db.CompanyEvent
+                                .FirstOrDefaultAsync(e => e.Name.CompareTo(entry.name) == 0 && e.CompanyId == company.Id);
+
+                            if (companyEvent != null)
+                            {
+                                companyEvent.Seats = Convert.ToInt32(entry.seats);
+                                companyEvent.BeginDate = Convert.ToDateTime(entry.beginDate);
+
+                                companyEvent.EndDate = Convert.ToDateTime(entry.endDate);
+                                await db.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                companyEvent = new CompanyEvent
+                                {
+                                    Name = entry.name,
+                                    BeginDate = Convert.ToDateTime(entry.beginDate),
+                                    EndDate = Convert.ToDateTime(entry.endDate),
+                                    Seats = Convert.ToInt32(entry.seats),
+                                    CompanyId = company.Id
+                                };
+
+                                db.CompanyEvent.Add(companyEvent);
+                                await db.SaveChangesAsync();
+                            }
+                        }
+                    }
+
+                    return 1;
+                }
+
+                return -1;
+            }
         }
 
         public async Task<CompanyDetailsModel[]> GetCompaniesAsync()

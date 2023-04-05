@@ -28,7 +28,37 @@ function AddChilds() {
 
 function EditCompany() {
     AddChilds();
-    console.log(list);
+    let formData = new FormData();
+
+    let name = $('#name').val();
+    let description = $('#description').summernote('code');
+
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('entries', JSON.stringify(list));
+
+    $.ajax({
+        url: '/Home/Create',
+        type: 'post',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: () => {
+            console.log("Company was edited successfully.");
+        },
+        statusCode: {
+            200: () => {
+                setTimeout(() => {
+                    location.href = "/Home/";
+                }, 500);
+            }
+        },
+        error: () => {
+            console.log('Company edited successfully.');
+        },
+        async: true
+    });
 }
 
 function RemoveItem(id) {
@@ -45,7 +75,6 @@ function RemoveItem(id) {
 
 function AddTableEvent() {
     AddChilds();
-    $('#body').empty();
 
     let obj = {
         name: $('#eventName').val(),
@@ -58,6 +87,7 @@ function AddTableEvent() {
     $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem('${list.length}')'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
 
     list.push(obj);
+    console.log(list);
     $('#eventName').val('');
     $('#eventBeginDate').val('');
 

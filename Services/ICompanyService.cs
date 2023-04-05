@@ -7,7 +7,7 @@ namespace Spinfluence.Services
     {
         Task<CompanyDetailsModel[]> GetCompaniesAsync();
         Task<CompanyDetailsModel?> GetCompanyAsync(int id);
-        Task<bool> CreateCompanyAsync(CompanyModel model);
+        Task<int> CreateCompanyAsync(CompanyModel model);
         Task<bool> RemoveCompanyAsync(int id);
     }
 }

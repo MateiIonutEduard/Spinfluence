@@ -5,6 +5,8 @@ using Spinfluence.Models;
 using Spinfluence.Services;
 using System;
 using System.Diagnostics;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 #pragma warning disable
 
 namespace Spinfluence.Controllers
@@ -44,15 +46,15 @@ namespace Spinfluence.Controllers
         public async Task<IActionResult> Create(CompanyModel companyModel)
         {
             string? token = HttpContext.Request.Cookies["token"];
-
+            
             if (!string.IsNullOrEmpty(token))
             {
-                var account = await accountService.About(token);
+                var account = accountService.About(token);
 
                 if (account != null && account!.admin)
                 {
-                    bool ok = await companyService.CreateCompanyAsync(companyModel);
-                    if (ok) return RedirectToAction("/Index");
+                    int res = await companyService.CreateCompanyAsync(companyModel);
+                    if (res >= 0) return Ok();
                     else return BadRequest();
                 }
 
