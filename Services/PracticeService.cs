@@ -27,7 +27,7 @@ namespace Spinfluence.Services
                 PracticeEventModel[] events = (
                     from p in practices join e in await spinContext.CompanyEvent.ToListAsync() on p.CompanyEventId equals e.Id join c in await spinContext.Company.ToListAsync()
                     on e.CompanyId equals c.Id
-                    let counter = (from pr in practices join ev in spinContext.CompanyEvent.ToList() on pr.CompanyEventId equals ev.Id select pr).Count()
+                    let counter = (from pr in spinContext.Practice.ToList() where pr.CompanyEventId == e.Id && !pr.IsCanceled select pr).Count()
                     select new PracticeEventModel
                     {
                         Name = e.Name,
