@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <img src="/Home/Profile/?id=@id&isLogo=false" width="1024" height="320" alt="@company.Name" />
+            <img src="/Home/Profile/?id=@id&isLogo=false" width="1048" height="320" alt="@company.Name" />
         </div>
         <div class="col-1"></div>
     </div>
@@ -28,26 +28,116 @@
                     <strong class="text-secondary">@company.Name</strong>
                 </div>
                 <div class="col-4">
-                    <label for="disponibil">Evenimente</label>
+                    <label for="disponibil">Locuri ramase</label>
                     @if (company.CompanyEvents < 10)
                     {
-                        <p class="text-danger" style="margin-left: 1%; font-weight: bold;">@company.CompanyEvents</p>
+                        <p class="text-danger" style="margin-left: 10%; font-weight: bold;">@company.CompanyEvents</p>
                     }
                     else
                     {
-                        <p class="text-success" style="margin-left: 1%; font-weight: bold;">@company.CompanyEvents</p>
+                        <p class="text-success" style="margin-left: 10%; font-weight: bold;">@company.CompanyEvents</p>
                     }
                 </div>
-                <div class="col-1"></div>
-                <div class="col-3">
-                    <button class="btn btn-small btn-success">Aplica</button>
-                    <a href="/Home/" class="btn btn-small btn-secondary">Inapoi</a>
+                <div class="col-3"></div>
+                <div class="col-1">
+                    <a href="/Home/" class="btn btn-small btn-primary" style="border-radius: 20%;"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                 </div>
             </div>
         </div>
         <div class="col-1"></div>
     </div>
 </section><br />
+<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="alert" style="background-color: #bbb1cd; width: 98%;" role="alert">
+                <h4 class="alert-heading">Evenimentele acestei companii</h4>
+                <p>Daca doriti sa faceti parte din diferite echipe, cum ar fi inginerie software, afaceri, experienta utilizator si multe altele.</p>
+                <hr>
+                <p class="mb-0">Cu diferite stagii, oferim multe oportunitati de a creste alaturi de noi si de a ajuta la crearea de produse si servicii de cea mai buna calitate. 
+                    <br />Hai sa construim lucruri minunate impreuna.</p>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section><br />
+<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            @if (company != null && company.CompanyEventList != null && company.CompanyEventList.Count > 0)
+            {
+                <table class="table table-hover" style="width: 98%;">
+                    <tbody style="background-color: #abc1e1; border-color: #abc1e1;">
+                        @foreach (var practiceEvent in company.CompanyEventList)
+                        {
+                            <tr>
+                                <td>@practiceEvent.Name</td>
+                                <td>@practiceEvent.TotalSeats</td>
+                                <td><small>@practiceEvent.BeginDate.ToString("dd/MM/yyyy")</small></td>
+                                <td><small>@practiceEvent.EndDate.ToString("dd/MM/yyyy")</small></td>
+                                <td>
+                                    <button class="btn btn-sm btn-success" style="margin-left: 25%;" data-bs-toggle="modal" data-bs-target="#practiceModal" onclick="AddPractice(@practiceEvent.Id)">
+                                        Aplica
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-center">
+                    <h1 class="display-1 fw-bold">404</h1>
+                    <p class="fs-3"> <span class="text-danger">Ups!</span> Pagina nu a fost gasita.</p>
+                    <p class="lead">
+
+                        Pagina pe care o cautati nu exista.
+                    </p>
+                    <a href="/Home/" class="btn btn-primary">Go Home</a>
+                </div>
+            }
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section><br /><br />
+<section>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="modal fade" id="practiceModal" tabindex="-1" aria-labelledby="practiceModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="practiceModalLabel">Aplica Eveniment</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/Practice/AddPractice/" method="post">
+                                <div class="mb-8">
+                                    <input type="hidden" class="form-control" id="CompanyEventId" name="CompanyEventId" />
+                                    <textarea class="form-control" id="Body" name="Body" rows="5" cols="100"></textarea>
+                                    <hr style="visibility: hidden;" />
+                                    <div class="row">
+                                        <div class="col-4"></div>
+                                        <div class="col-3"></div>
+                                        <div class="col-5">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Inchide</button>
+                                            <input type="submit" class="btn btn-success btn-sm" style="margin-left: 5%;" value="Aplica" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</section><br/>
 <section>
     <div class="row">
         <div class="col-1"></div>

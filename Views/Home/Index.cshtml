@@ -5,6 +5,7 @@
 @inject ICompanyService companyService;
 
 @{
+    #pragma warning disable
     ViewData["Title"] = "Toate companiile";
     CompanyDetailsModel[] companies = await companyService.GetCompaniesAsync();
     int n = companies.Length;
@@ -36,7 +37,7 @@
                         <tr>
                             <th>#</th>
                             <th>Numele companiei</th>
-                            <th>Evenimente</th>
+                            <th>Locuri disponibile</th>
                             <th>Aplicare</th>
                         </tr>
                     </thead>

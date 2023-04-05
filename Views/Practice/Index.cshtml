@@ -17,7 +17,6 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-
             @if (n > 0)
             {
                 <table class="table table-hover">
@@ -41,9 +40,9 @@
                                 <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
                                 <td><center>@practiceEvent.Seats</center></td>
                                 <td>
-                                    <a class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" href="/Practice/RemovePractice/?id=@practiceEvent.PracticeId">
+                                    <button class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" onclick="RemovePractice(@practiceEvent.PracticeId)">
                                 <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                </a></td>
+                                </button></td>
                             </tr>
                         }
                     </tbody>

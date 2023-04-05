@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Spinfluence.Models;
 using Spinfluence.Services;
 #pragma warning disable
@@ -20,25 +21,26 @@ namespace Spinfluence.Controllers
         public async Task<IActionResult> AddPractice(PracticeModel practiceModel)
         {
             string? token = Request.Cookies["token"];
-            bool ok = await practiceService.AddPracticeAsync(practiceModel, token);
+            int res = await practiceService.AddPracticeAsync(practiceModel, token);
 
-            if (ok) return RedirectToAction("/Index");
+            if (res >= 0) return Redirect("/Practice/");
             return Redirect("/Account/Login");
         }
 
-        [HttpDelete]
+        [HttpDelete, Authorize]
         public async Task<IActionResult> RemovePractice(int? id)
         {
-            string? token = Request.Cookies["token"];
+            string header = HttpContext.Request.Headers["Authorization"];
+            string token = header.Split(' ')[1];
 
-            if(id != null)
+            if (id != null)
             {
                 int res = await practiceService.CancelPracticeEventAsync(id.Value, token);
-                if (res == 1) return RedirectToAction("/Index");
-                else if (res < 0) return Redirect("/Account/Login");
+                if (res == 1) return Ok();
+                else if (res < 0) return Unauthorized();
             }
 
-            return RedirectToAction("/Index");
+            return NotFound();
         }
     }
 }

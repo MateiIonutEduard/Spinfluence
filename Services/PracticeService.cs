@@ -46,13 +46,18 @@ namespace Spinfluence.Services
             return list.ToArray();
         }
 
-        public async Task<bool> AddPracticeAsync(PracticeModel practiceModel, string token)
+        public async Task<int> AddPracticeAsync(PracticeModel practiceModel, string token)
         {
             Account? account = await spinContext.Account.
                 FirstOrDefaultAsync(a => a.token.CompareTo(token) == 0);
 
             if(account != null)
             {
+                Practice? obj = await spinContext.Practice
+                    .FirstOrDefaultAsync(p => p.AccountId == account.Id && p.CompanyEventId == practiceModel.CompanyEventId);
+
+                if (obj != null) return 0;
+
                 Practice practice = new Practice
                 {
                     Body = practiceModel.Body,
@@ -63,10 +68,10 @@ namespace Spinfluence.Services
 
                 spinContext.Practice.Add(practice);
                 await spinContext.SaveChangesAsync();
-                return true;
+                return 1;
             }
 
-            return false;
+            return -1;
         }
 
         public async Task<int> CancelPracticeEventAsync(int practiceId, string token)

@@ -30,7 +30,7 @@ namespace Spinfluence
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidateLifetime = true,
+                        ValidateLifetime = false,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = config["JwtSettings:Issuer"],
                         ValidAudience = config["JwtSettings:Audience"],
