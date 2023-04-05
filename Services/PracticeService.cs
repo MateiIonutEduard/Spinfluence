@@ -56,7 +56,15 @@ namespace Spinfluence.Services
                 Practice? obj = await spinContext.Practice
                     .FirstOrDefaultAsync(p => p.AccountId == account.Id && p.CompanyEventId == practiceModel.CompanyEventId);
 
-                if (obj != null) return 0;
+                if (obj != null && !obj.IsCanceled) return 0;
+
+                if(obj != null && obj.IsCanceled)
+                {
+                    obj.IsCanceled = false;
+                    obj.Body = practiceModel.Body;
+                    await spinContext.SaveChangesAsync();
+                    return 2;
+                }
 
                 Practice practice = new Practice
                 {

@@ -57,7 +57,7 @@ namespace Spinfluence.Services
             (
              from c in await db.Company.ToListAsync()
              let TotalSeats = (from e in db.CompanyEvent.ToList() where e.CompanyId == c.Id select e).Sum(e => e.Seats)
-             let practiceEventSeats = (from p in db.Practice.ToList() join e in db.CompanyEvent.ToList() on p.CompanyEventId equals e.Id where e.CompanyId == c.Id select p).Count()
+             let practiceEventSeats = (from p in db.Practice.ToList() join e in db.CompanyEvent.ToList() on p.CompanyEventId equals e.Id where e.CompanyId == c.Id && !p.IsCanceled select p).Count()
              select new CompanyDetailsModel
              {
                  Id = c.Id,
@@ -80,7 +80,7 @@ namespace Spinfluence.Services
             {
                 var companyEvents = (from e in await db.CompanyEvent.Where(e => e.CompanyId == id)
                     .ToListAsync() orderby e.BeginDate ascending
-                    let seatEvents = db.Practice.Where(p => p.CompanyEventId == e.Id).Count()
+                    let seatEvents = db.Practice.Where(p => p.CompanyEventId == e.Id && !p.IsCanceled).Count()
                     select new CompanyEventModel
                     {
                         Id = e.Id,
