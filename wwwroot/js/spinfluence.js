@@ -17,15 +17,17 @@ function AddEvent() {
         seats: $('#eventSeats').val()
     };
 
-    // append html container to table body
-    $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
-    list.push(obj);
+    if (obj.name !== '' && obj.beginDate !== '' && obj.endDate !== '' && obj.seats !== '') {
+        // append html container to table body
+        $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+        list.push(obj);
 
-    $('#eventName').val('');
-    $('#eventBeginDate').val('');
+        $('#eventName').val('');
+        $('#eventBeginDate').val('');
 
-    $('#eventEndDate').val('');
-    $('#eventSeats').val('');
+        $('#eventEndDate').val('');
+        $('#eventSeats').val('');
+    }
 }
 
 function RemoveEvent(id) {
@@ -53,6 +55,10 @@ function AddChilds() {
             list.push(obj);
         }
     }
+}
+
+function NewCompany() {
+
 }
 
 function EditCompany() {
@@ -112,16 +118,18 @@ function AddTableEvent() {
         seats: $('#eventSeats').val()
     };
 
-    // append html container to table body
-    $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+    if (obj.name !== '' && obj.beginDate !== '' && obj.endDate !== '' && obj.seats !== '') {
+        // append html container to table body
+        $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
 
-    list.push(obj);
-    console.log(list);
-    $('#eventName').val('');
-    $('#eventBeginDate').val('');
+        list.push(obj);
+        console.log(list);
+        $('#eventName').val('');
+        $('#eventBeginDate').val('');
 
-    $('#eventEndDate').val('');
-    $('#eventSeats').val('');
+        $('#eventEndDate').val('');
+        $('#eventSeats').val('');
+    }
 }
 
 function AddPractice(CompanyEventId) {

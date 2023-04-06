@@ -131,6 +131,17 @@
                             <label for="description" class="form-label"><b class="text-danger">*</b> Descriere Companie</label>
                             <textarea class="form-control form-control-sm" id="description" name="description" rows="8" cols="10" placeholder="Descrierea Companiei"></textarea><br />
                         </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label"><b class="text-danger">*</b> Atasamente</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input class="form-control form-control-sm" id="logoImage" name="logoImage" type="file" />
+                                </div>
+                                <div class="col-6">
+                                    <input class="form-control form-control-sm" id="posterImage" name="posterImage" type="file" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-2"></div>
                 </div>
@@ -147,16 +158,16 @@
                     <div class="col-8">
                         <div class="row">
                             <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment" required/>
+                                <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment"/>
                             </div>
                             <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" required />
+                                <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" />
                             </div>
                             <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" required />
+                                <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" />
                             </div>
                             <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile" required />
+                                <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile"/>
                             </div>
                         </div>
                     </div>
@@ -186,7 +197,7 @@
                         <div class="row">
                             <div class="col-4"></div>
                             <div class="col-2">
-                                <button class="btn btn-success" onclick="EditCompany()">Adauga</button>
+                                <button class="btn btn-success" onclick="NewCompany()">Adauga</button>
                             </div>
                             <div class="col-2">
                                 <button class="btn btn-secondary" onclick="GoHome()">Acasa</button>
