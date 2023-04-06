@@ -3,7 +3,7 @@
 ###############################################################################
 * text=auto
 
-Views/Home/Edit.cshtml linguist-vendored
+# Views/Home/Edit.cshtml linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
