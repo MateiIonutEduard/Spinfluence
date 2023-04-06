@@ -47,6 +47,27 @@ namespace Spinfluence.Services
 
                 db.Company.Add(company);
                 await db.SaveChangesAsync();
+
+                var entries = JsonConvert.DeserializeObject<CompanyEventEntry[]>(model.entries);
+
+                if (entries != null && entries.Length > 0)
+                {
+                    foreach (CompanyEventEntry entry in entries)
+                    {
+                        CompanyEvent companyEvent = new CompanyEvent
+                        {
+                            Name = entry.name,
+                            BeginDate = Convert.ToDateTime(entry.beginDate),
+                            EndDate = Convert.ToDateTime(entry.endDate),
+                            Seats = Convert.ToInt32(entry.seats),
+                            CompanyId = company.Id
+                        };
+
+                        db.CompanyEvent.Add(companyEvent);
+                        await db.SaveChangesAsync();
+                    }
+                }
+
                 return 0;
             }
             else
