@@ -58,12 +58,50 @@ function AddChilds() {
 }
 
 function NewCompany() {
+    let formData = new FormData();
+    let token = document.cookie.substring(6);
 
+    let name = $('#name').val();
+    let description = $('#description').summernote('code');
+
+    formData.append('name', name);
+    formData.append('description', description);
+
+    formData.append('logoImage', $('#logoImage').get(0).files[0]);
+    formData.append('posterImage', $('#posterImage').get(0).files[0]);
+    formData.append('entries', JSON.stringify(list));
+
+    $.ajax({
+        url: '/Home/Create',
+        type: 'post',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        },
+        success: () => {
+            console.log("Company was edited successfully.");
+        },
+        statusCode: {
+            200: () => {
+                setTimeout(() => {
+                    location.href = "/Home/";
+                }, 500);
+            }
+        },
+        error: () => {
+            console.log('Company edited successfully.');
+        },
+        async: true
+    });
 }
 
 function EditCompany() {
     AddChilds();
     let formData = new FormData();
+    let token = document.cookie.substring(6);
 
     let name = $('#name').val();
     let description = $('#description').summernote('code');
@@ -79,6 +117,9 @@ function EditCompany() {
         cache: false,
         contentType: false,
         processData: false,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        },
         success: () => {
             console.log("Company was edited successfully.");
         },

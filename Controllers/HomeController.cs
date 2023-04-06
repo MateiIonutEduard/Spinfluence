@@ -42,11 +42,12 @@ namespace Spinfluence.Controllers
             return File(buffer, $"image/{filePath.Substring(index + 1)}");
         }
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<IActionResult> Create(CompanyModel companyModel)
         {
-            string? token = HttpContext.Request.Cookies["token"];
-            
+            string header = HttpContext.Request.Headers["Authorization"];
+            string token = header.Split(' ')[1];
+
             if (!string.IsNullOrEmpty(token))
             {
                 var account = accountService.About(token);
