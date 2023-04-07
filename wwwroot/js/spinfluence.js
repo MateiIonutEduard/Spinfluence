@@ -28,6 +28,15 @@ function AddEvent() {
         $('#eventEndDate').val('');
         $('#eventSeats').val('');
     }
+
+    if (list.length !== 0) {
+        $("#events").css('display', 'block');
+        $("#panel").css('display', 'none');
+    }
+    else {
+        $("#events").css('display', 'none');
+        $("#panel").css('display', 'block');
+    }
 }
 
 function RemoveEvent(id) {
@@ -37,6 +46,15 @@ function RemoveEvent(id) {
 
         for (let k = 0; k < list.length; k++)
             $('#body').append(`<tr><td>${list[k].name}</td><td>${list[k].beginDate}</td><td>${list[k].endDate}</td><td>${list[k].seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${k})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+    }
+
+    if (list.length === 0) {
+        $("#events").css('display', 'none');
+        $("#panel").css('display', 'block');
+    } 
+    else {
+        $("#events").css('display', 'block');
+        $("#panel").css('display', 'none');
     }
 }
 
