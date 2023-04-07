@@ -18,15 +18,22 @@ function AddEvent() {
     };
 
     if (obj.name !== '' && obj.beginDate !== '' && obj.endDate !== '' && obj.seats !== '') {
-        // append html container to table body
-        $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
-        list.push(obj);
+        let beginDate = new Date(obj.beginDate).getTime();
+        let endDate = new Date(obj.endDate).getTime();
 
-        $('#eventName').val('');
-        $('#eventBeginDate').val('');
+        if (beginDate < endDate) {
+            // append html container to table body
+            $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveEvent(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+            list.push(obj);
 
-        $('#eventEndDate').val('');
-        $('#eventSeats').val('');
+            $('#eventName').val('');
+            $('#eventBeginDate').val('');
+
+            $('#eventEndDate').val('');
+            $('#eventSeats').val('');
+        }
+        else
+            $("#eventEndDate").css('border', '1px red solid');
     }
 
     if (list.length !== 0) {
@@ -177,6 +184,10 @@ function RemoveItem(id) {
     }
 }
 
+function DisableBorder() {
+    $("#eventEndDate").css('border', 'none');
+}
+
 function AddTableEvent() {
     AddChilds();
 
@@ -188,16 +199,23 @@ function AddTableEvent() {
     };
 
     if (obj.name !== '' && obj.beginDate !== '' && obj.endDate !== '' && obj.seats !== '') {
-        // append html container to table body
-        $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
+        let beginDate = new Date(obj.beginDate).getTime();
+        let endDate = new Date(obj.endDate).getTime();
 
-        list.push(obj);
-        console.log(list);
-        $('#eventName').val('');
-        $('#eventBeginDate').val('');
+        if (beginDate < endDate) {
+            // append html container to table body
+            $('#body').append(`<tr><td>${obj.name}</td><td>${obj.beginDate}</td><td>${obj.endDate}</td><td>${obj.seats}</td><td><button class='btn text-danger' onclick='RemoveItem(${list.length})'><i class='fa fa-trash' aria-hidden='true'></i></button></td></tr>`);
 
-        $('#eventEndDate').val('');
-        $('#eventSeats').val('');
+            list.push(obj);
+            console.log(list);
+            $('#eventName').val('');
+            $('#eventBeginDate').val('');
+
+            $('#eventEndDate').val('');
+            $('#eventSeats').val('');
+        }
+        else
+            $("#eventEndDate").css('border', '1px red solid');
     }
 
     if (list.length !== 0) {
