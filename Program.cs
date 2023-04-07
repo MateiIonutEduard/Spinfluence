@@ -17,8 +17,11 @@ namespace Spinfluence
             var builder = WebApplication.CreateBuilder(args);
             var config = builder.Configuration;
 
+            string connectionString = config.GetConnectionString("SpinFluenceDB");
+            ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
+
             builder.Services.AddDbContext<SpinContext>(options =>
-                options.UseMySql(config.GetConnectionString("SpinFluenceDB"), new MySqlServerVersion(new Version(10, 4, 22))));
+                options.UseMySql(connectionString, serverVersion));
 
             builder.Services.AddSingleton<IAccountSettings>(sp =>
                 sp.GetRequiredService<IOptions<AccountSettings>>().Value);
