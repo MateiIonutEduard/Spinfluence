@@ -9,6 +9,15 @@ function GoHome() {
     location.href = '/Home/';
 }
 
+const parseCookie = str =>
+    str
+        .split(';')
+        .map(v => v.split('='))
+        .reduce((acc, v) => {
+            acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
+            return acc;
+        }, {});
+
 function AddEvent() {
     let obj = {
         name: $('#eventName').val(),
@@ -84,7 +93,8 @@ function AddChilds() {
 
 function NewCompany() {
     let formData = new FormData();
-    let token = document.cookie.substring(6);
+    var obj = parseCookie(document.cookie);
+    let token = obj.token;
 
     let name = $('#name').val();
     let description = $('#description').summernote('code');
@@ -126,7 +136,8 @@ function NewCompany() {
 function EditCompany() {
     AddChilds();
     let formData = new FormData();
-    let token = document.cookie.substring(6);
+    var obj = parseCookie(document.cookie);
+    let token = obj.token;
 
     let name = $('#name').val();
     let description = $('#description').summernote('code');
@@ -235,7 +246,8 @@ function AddPractice(CompanyEventId) {
 }
 
 function RemoveCompany(id) {
-    let token = document.cookie.substring(6);
+    var obj = parseCookie(document.cookie);
+    let token = obj.token;
 
     $.ajax({
         url: `/Home/RemoveCompany/?id=${id}`,
@@ -268,7 +280,8 @@ function RemoveCompany(id) {
 }
 
 function RemovePractice(id) {
-    let token = document.cookie.substring(6);
+    var obj = parseCookie(document.cookie);
+    let token = obj.token;
 
     $.ajax({
         url: `/Practice/RemovePractice/?id=${id}`,
