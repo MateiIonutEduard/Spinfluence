@@ -83,6 +83,10 @@ namespace Spinfluence.Services
                         await db.SaveChangesAsync();
                     }
 
+                    // old company events before update
+                    List<CompanyEvent> entryList = await db.CompanyEvent.Where(e => e.CompanyId == company.Id)
+                        .ToListAsync();
+
                     if (entries != null && entries.Length > 0)
                     {
                         foreach (CompanyEventEntry entry in entries)
@@ -95,6 +99,7 @@ namespace Spinfluence.Services
                                 companyEvent.Seats = Convert.ToInt32(entry.seats);
                                 companyEvent.BeginDate = Convert.ToDateTime(entry.beginDate);
 
+                                entryList.Remove(companyEvent);
                                 companyEvent.EndDate = Convert.ToDateTime(entry.endDate);
                                 await db.SaveChangesAsync();
                             }
@@ -113,6 +118,13 @@ namespace Spinfluence.Services
                                 await db.SaveChangesAsync();
                             }
                         }
+                    }
+
+                    // remove remaining company events
+                    if (entryList.Count > 0)
+                    {
+                        db.CompanyEvent.RemoveRange(entryList);
+                        await db.SaveChangesAsync();
                     }
 
                     return 1;
