@@ -36,8 +36,10 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            @if(company != null)
+            @if (obj != null && obj.admin)
             {
+                @if (company != null)
+                {
                     <div class="row">
                         <div class="col-2"></div>
                         <div class="col-8">
@@ -52,70 +54,70 @@
                         </div>
                         <div class="col-2"></div>
                     </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <h3 class="text-secondary">Evenimente</h3>
-                        <hr class="text-dark"/>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <h3 class="text-secondary">Evenimente</h3>
+                            <hr class="text-dark"/>
+                        </div>
+                        <div class="col-2"></div>
                     </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="row">
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment" />
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" oninput="DisableBorder()"/>
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile" />
+                                </div>
                             </div>
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" />
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" oninput="DisableBorder()"/>
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile" />
+                        </div>
+                        <div class="col-2">
+                            <div class="row">
+                                <div class="col-2">
+                                    <a class="btn btn-primary btn-sm" style="border-radius: 50%; transform: scale(0.9);" onclick="AddTableEvent()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <div class="row">
-                            <div class="col-2">
-                                <a class="btn btn-primary btn-sm" style="border-radius: 50%; transform: scale(0.9);" onclick="AddTableEvent()"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8" id="events" style="display: @displayEvents;">
-                        <hr class="text-dark" /><br />
-                        <table class="table table-hover">
-                            <tbody style="background-color: #abc1e1;" id="body">
-                                <!-- Append event objects dynamically here... -->
-                                @if (company.CompanyEventList != null && company.CompanyEventList.Count > 0)
-                                {
-                                    @for (int k = 0; k < company.CompanyEventList.Count; k++)
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8" id="events" style="display: @displayEvents;">
+                            <hr class="text-dark" /><br />
+                            <table class="table table-hover">
+                                <tbody style="background-color: #abc1e1;" id="body">
+                                    <!-- Append event objects dynamically here... -->
+                                    @if (company.CompanyEventList != null && company.CompanyEventList.Count > 0)
                                     {
-                                        <tr>
-                                            <td>@company.CompanyEventList[k].Name</td>
-                                            <td>@company.CompanyEventList[k].BeginDate.ToString("MM/dd/yyyy")</td>
-                                            <td>@company.CompanyEventList[k].EndDate.ToString("MM/dd/yyyy")</td>
-                                            <td>@company.CompanyEventList[k].TotalSeats</td>
-                                            <td><button class="btn text-danger" onclick="RemoveItem(@k)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
-                                        </tr>
+                                        @for (int k = 0; k < company.CompanyEventList.Count; k++)
+                                        {
+                                            <tr>
+                                                <td>@company.CompanyEventList[k].Name</td>
+                                                <td>@company.CompanyEventList[k].BeginDate.ToString("MM/dd/yyyy")</td>
+                                                <td>@company.CompanyEventList[k].EndDate.ToString("MM/dd/yyyy")</td>
+                                                <td>@company.CompanyEventList[k].TotalSeats</td>
+                                                <td><button class="btn text-danger" onclick="RemoveItem(@k)"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
+                                            </tr>
+                                        }
                                     }
-                                }
-                            </tbody>
+                                </tbody>
                             </table>
-                    </div>
-                    <div class="col-8" id="panel" style="display: @displayPanel;">
-                        <hr class="text-dark" /><br />
-                        <div class="alert alert-danger" style="border: 1px #6c4dab solid; height: 56px;" role="alert">
-                            <p class="text-dark" style="text-align: center;">Nu aveti inca nici un eveniment inregistrat!</p>
                         </div>
-                    </div>
-                    <div class="col-2"></div>
+                        <div class="col-8" id="panel" style="display: @displayPanel;">
+                            <hr class="text-dark" /><br />
+                            <div class="alert alert-danger" style="border: 1px #6c4dab solid; height: 56px;" role="alert">
+                                <p class="text-dark" style="text-align: center;">Nu aveti inca nici un eveniment inregistrat!</p>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
                     </div>
                     <div class="row">
                         <div class="col-2"></div>
@@ -123,7 +125,7 @@
                             <div class="row">
                                 <div class="col-4"></div>
                                 <div class="col-2">
-                                <button class="btn btn-success" onclick="EditCompany()">Adauga</button>
+                                    <button class="btn btn-success" onclick="EditCompany()">Adauga</button>
                                 </div>
                                 <div class="col-2">
                                     <button class="btn btn-secondary" onclick="GoHome()">Acasa</button>
@@ -132,101 +134,116 @@
                             </div>
                         </div>
                         <div class="col-2"></div>
-                </div>
-            } else
-            {
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="mb-3">
-                            <label for="name" class="form-label"><b class="text-danger">*</b> Numele Companiei</label>
-                            <input class="form-control form-control-sm" id="name" name="name" type="text" placeholder="Nume Companie" required />
+                    </div>
+                }
+                else
+                {
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <div class="mb-3">
+                                <label for="name" class="form-label"><b class="text-danger">*</b> Numele Companiei</label>
+                                <input class="form-control form-control-sm" id="name" name="name" type="text" placeholder="Nume Companie" required />
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label"><b class="text-danger">*</b> Descriere Companie</label>
+                                <textarea class="form-control form-control-sm" id="description" name="description" rows="8" cols="10" placeholder="Descrierea Companiei" required></textarea><br />
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label"><b class="text-danger">*</b> Atasamente</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <input class="form-control form-control-sm" id="logoImage" name="logoImage" type="file" required/>
+                                    </div>
+                                    <div class="col-6">
+                                        <input class="form-control form-control-sm" id="posterImage" name="posterImage" type="file" required/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label"><b class="text-danger">*</b> Descriere Companie</label>
-                            <textarea class="form-control form-control-sm" id="description" name="description" rows="8" cols="10" placeholder="Descrierea Companiei" required></textarea><br />
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <h3 class="text-secondary">Evenimente</h3>
+                            <hr class="text-dark" />
                         </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label"><b class="text-danger">*</b> Atasamente</label>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
                             <div class="row">
-                                <div class="col-6">
-                                    <input class="form-control form-control-sm" id="logoImage" name="logoImage" type="file" required/>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment"/>
                                 </div>
-                                <div class="col-6">
-                                    <input class="form-control form-control-sm" id="posterImage" name="posterImage" type="file" required/>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" oninput="DisableBorder()" />
+                                </div>
+                                <div class="col-3">
+                                    <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="row">
+                                <div class="col-2">
+                                    <a class="btn btn-primary btn-sm" style="border-radius: 50%; transform: scale(0.9);" onclick="AddEvent()"><i class="fa fa-plus" aria-hidden="true"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <h3 class="text-secondary">Evenimente</h3>
-                        <hr class="text-dark" />
-                    </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="row">
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventName" name="eventName" type="text" placeholder="Nume eveniment"/>
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventBeginDate" name="eventBeginDate" type="date" />
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventEndDate" name="eventEndDate" type="date" oninput="DisableBorder()" />
-                            </div>
-                            <div class="col-3">
-                                <input class="form-control form-control-sm" id="eventSeats" name="eventSeats" type="text" placeholder="Locuri disponibile"/>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8" id="events" style="display: none;">
+                            <hr class="text-dark" /><br />
+                            <table class="table table-hover">
+                                <tbody style="background-color: #abc1e1;" id="body">
+                                    <!-- Append event objects dynamically here... -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-8" id="panel">
+                            <hr class="text-dark" /><br />
+                            <div class="alert alert-danger" style="border: 1px #6c4dab solid; height: 56px;" role="alert">
+                                <p class="text-dark" style="text-align: center;">Nu aveti inca nici un eveniment inregistrat!</p>
                             </div>
                         </div>
+                        <div class="col-2"></div>
                     </div>
-                    <div class="col-2">
-                        <div class="row">
-                            <div class="col-2">
-                                <a class="btn btn-primary btn-sm" style="border-radius: 50%; transform: scale(0.9);" onclick="AddEvent()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col-2">
+                                    <button class="btn btn-success" onclick="NewCompany()">Adauga</button>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-secondary" onclick="GoHome()">Acasa</button>
+                                </div>
+                                <div class="col-4"></div>
                             </div>
                         </div>
+                        <div class="col-2"></div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8" id="events" style="display: none;">
-                        <hr class="text-dark" /><br />
-                        <table class="table table-hover">
-                            <tbody style="background-color: #abc1e1;" id="body">
-                                <!-- Append event objects dynamically here... -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-8" id="panel">
-                        <hr class="text-dark" /><br />
-                        <div class="alert alert-danger" style="border: 1px #6c4dab solid; height: 56px;" role="alert">
-                            <p class="text-dark" style="text-align: center;">Nu aveti inca nici un eveniment inregistrat!</p>
+                }
+            }
+            else
+            {
+                <div class="alert" style="background-color: #a93943;">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-8">
+                            <p class="text-white" style="font-weight: bold; margin-left: 1%; margin-top: 2%;">Nu sunteti autorizat pentru a adauga sau a actualiza aceasta companie.</p>
+                            <p class="text-white" style="font-weight: bold; margin-left: 1%;"><i class="fa fa-exclamation-triangle" style="color: #e98888 !important;" aria-hidden="true"></i>&nbsp;&nbsp;Aceasta pagina se adreseaza numai administratorilor serverului.<br/><br/><a href="/Home/" style="color: #f5b496 !important; text-decoration: none; margin-left: 30%;"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;&nbsp;Acasa</a></p>
                         </div>
-                     </div>
-                    <div class="col-2"></div>
-                </div>
-                <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-8">
-                        <div class="row">
-                            <div class="col-4"></div>
-                            <div class="col-2">
-                                <button class="btn btn-success" onclick="NewCompany()">Adauga</button>
-                            </div>
-                            <div class="col-2">
-                                <button class="btn btn-secondary" onclick="GoHome()">Acasa</button>
-                            </div>
-                            <div class="col-4"></div>
-                        </div>
+                        <div class="col-2"></div>
                     </div>
-                    <div class="col-2"></div>
                 </div>
             }
         </div>
