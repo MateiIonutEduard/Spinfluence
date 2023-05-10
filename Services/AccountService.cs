@@ -89,7 +89,7 @@ namespace Spinfluence.Services
 
         private string GenToken(Account account)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:Key"]));
+            var securityKey = new SymmetricSecurityKey(Convert.FromBase64String(Configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(Configuration["JwtSettings:Issuer"],

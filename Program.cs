@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Spinfluence.Data;
+using Spinfluence.Infrastructure;
 using Spinfluence.Models;
 using Spinfluence.Services;
 using System.Text;
@@ -14,6 +15,13 @@ namespace Spinfluence
     {
         public static void Main(string[] args)
         {
+            if(args.Length > 0)
+            {
+                // execute in terminal
+                CliUtils.ExecuteCommand(args);
+                Environment.Exit(0);
+            }
+
             var builder = WebApplication.CreateBuilder(args);
             var config = builder.Configuration;
 
@@ -37,7 +45,7 @@ namespace Spinfluence
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = config["JwtSettings:Issuer"],
                         ValidAudience = config["JwtSettings:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(config["JwtSettings:Key"]))
                     };
                 });
 

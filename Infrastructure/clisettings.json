@@ -1,0 +1,16 @@
+[
+    {
+        "CommandName": "--secret-sign-key"
+    },
+    {
+        "CommandName": "--bearer-sign-key"
+    },
+    {
+        "CommandName": "--gen-secret-sign-key",
+        "CommandValue": 256
+    },
+    {
+        "CommandName": "--gen-bearer-sign-key",
+        "CommandValue": 256
+    }
+]
