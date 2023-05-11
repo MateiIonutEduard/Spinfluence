@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Spinfluence.Data;
 
@@ -10,9 +11,10 @@ using Spinfluence.Data;
 namespace Spinfluence.Migrations
 {
     [DbContext(typeof(SpinContext))]
-    partial class SpinContextModelSnapshot : ModelSnapshot
+    [Migration("20230511123517_ImprovedSpinMigration")]
+    partial class ImprovedSpinMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
