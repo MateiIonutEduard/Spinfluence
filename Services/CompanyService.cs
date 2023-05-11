@@ -21,16 +21,24 @@ namespace Spinfluence.Services
 
             if (model.logoImage != null)
             {
-                logoImage = $"./Storage/companies/logo/{model.logoImage.FileName}";
+                string logoFolder = "./Storage/companies/logo";
+                if (!Directory.Exists(logoFolder)) Directory.CreateDirectory(logoFolder);
+
+                logoImage = $"{logoFolder}/{model.logoImage.FileName}";
                 var ms = new MemoryStream();
+
                 await model.logoImage.CopyToAsync(ms);
                 File.WriteAllBytes(logoImage, ms.ToArray());
             }
 
             if (model.posterImage != null)
             {
-                posterImage = $"./Storage/companies/poster/{model.posterImage.FileName}";
+                string posterFolder = "./Storage/companies/poster";
+                if (!Directory.Exists(posterFolder)) Directory.CreateDirectory(posterFolder);
+
+                posterImage = $"{posterFolder}/{model.posterImage.FileName}";
                 var ms = new MemoryStream();
+
                 await model.posterImage.CopyToAsync(ms);
                 File.WriteAllBytes(posterImage, ms.ToArray());
             }
