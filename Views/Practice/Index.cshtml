@@ -28,6 +28,7 @@
                             <th>Descriere</th>
                             <th>Perioada</th>
                             <th>Locuri disponibile</th>
+                            <th>Atasamente</th>
                             <th>Actiuni</th>
                         </tr>
                     </thead>
@@ -40,6 +41,24 @@
                                 <td>@Html.Raw(practiceEvent.Body)</td>
                                 <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
                                 <td><center>@practiceEvent.Seats</center></td>
+                                <td>
+                                    @if (string.IsNullOrEmpty(practiceEvent.Resume) && string.IsNullOrEmpty(practiceEvent.CoverLetter))
+                                    {
+                                        <span style="margin-left: 30%; margin-top: 10%;" class="fa fa-times text-danger"></span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(practiceEvent.Resume))
+                                    {
+                                        <small>
+                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEvent.PracticeId&type=resume">@practiceEvent.Resume.Substring(practiceEvent.Resume.LastIndexOf("/") + 1)</a>
+                                        </small>
+                                    }<br />
+                                    @if (!string.IsNullOrEmpty(practiceEvent.CoverLetter))
+                                    {
+                                        <small>
+                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEvent.PracticeId&type=coverLetter">@practiceEvent.CoverLetter.Substring(practiceEvent.CoverLetter.LastIndexOf("/") + 1)</a>
+                                        </small>
+                                    }
+                                </td>
                                 <td>
                                     <button class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" onclick="RemovePractice(@practiceEvent.PracticeId)">
                                 <i class="fa fa-trash text-danger" aria-hidden="true"></i>

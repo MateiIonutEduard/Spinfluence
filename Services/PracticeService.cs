@@ -70,6 +70,8 @@ namespace Spinfluence.Services
                         PracticeId = p.Id,
                         BeginDate = e.BeginDate,
                         Seats = e.Seats - counter,
+                        Resume = p.Resume,
+                        CoverLetter = p.CoverLetter,
                         CompanyName = c.Name,
                         EndDate = e.EndDate,
                         Body = p.Body,
