@@ -37,7 +37,7 @@
                             <tr>
                                 <td>@practiceEvent.Name</td>
                                 <td>@practiceEvent.CompanyName</td>
-                                <td>@practiceEvent.Body</td>
+                                <td>@Html.Raw(practiceEvent.Body)</td>
                                 <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
                                 <td><center>@practiceEvent.Seats</center></td>
                                 <td>

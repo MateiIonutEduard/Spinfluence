@@ -120,7 +120,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form action="/Practice/AddPractice/" method="post">
+                            <form action="/Practice/AddPractice/" method="post" enctype="multipart/form-data">
                                 <div class="mb-8">
                                     <input type="hidden" class="form-control" id="CompanyEventId" name="CompanyEventId" />
                                     <textarea class="form-control" id="Body" name="Body" rows="5" cols="100"></textarea><br/>
@@ -130,7 +130,7 @@
                                         </div>
                                         <div class="col-2"></div>
                                         <div class="col-6">
-                                            <input type="file" class="form-control form-control-sm" id="resume" name="resume" />
+                                            <input type="file" class="form-control form-control-sm" id="Resume" name="Resume" />
                                         </div>
                                     </div><br/>
                                     <div class="row">
@@ -139,7 +139,7 @@
                                         </div>
                                         <div class="col-2"></div>
                                         <div class="col-6">
-                                            <input type="file" class="form-control form-control-sm" id="coverLetter" name="coverLetter" />
+                                            <input type="file" class="form-control form-control-sm" id="CoverLetter" name="CoverLetter" />
                                         </div>
                                     </div>
                                     <hr style="visibility: hidden;" />

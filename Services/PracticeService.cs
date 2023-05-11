@@ -2,6 +2,7 @@
 using Spinfluence.Data;
 using Spinfluence.Models;
 using Microsoft.EntityFrameworkCore;
+#pragma warning disable
 
 namespace Spinfluence.Services
 {
@@ -57,11 +58,56 @@ namespace Spinfluence.Services
                     .FirstOrDefaultAsync(p => p.AccountId == account.Id && p.CompanyEventId == practiceModel.CompanyEventId);
 
                 if (obj != null && !obj.IsCanceled) return 0;
+                string resumeFolder = "./Storage/attachments/resumes";
+                if (!Directory.Exists(resumeFolder)) Directory.CreateDirectory(resumeFolder);
+
+                string coverLetterFolder = "./Storage/attachments/coverLetters";
+                if (!Directory.Exists(coverLetterFolder)) Directory.CreateDirectory(coverLetterFolder);
+                MemoryStream ms = new MemoryStream();
+
+                string resumePath = string.Empty;
+                string coverPath = string.Empty;
+
+                if (practiceModel.Resume != null)
+                {
+                    // create resume file at disk
+                    await practiceModel.Resume.CopyToAsync(ms);
+                    resumePath = $"{resumeFolder}/{practiceModel.Resume.FileName}";
+                    File.WriteAllBytes(resumePath, ms.ToArray());
+                }
+
+                if(practiceModel.CoverLetter != null)
+                {
+                    // write cover letter file to disk
+                    await practiceModel.CoverLetter.CopyToAsync(ms);
+                    coverPath = $"{coverLetterFolder}/{practiceModel.CoverLetter.FileName}";
+                    File.WriteAllBytes(coverPath, ms.ToArray());
+                }
 
                 if(obj != null && obj.IsCanceled)
                 {
                     obj.IsCanceled = false;
                     obj.Body = practiceModel.Body;
+
+                    // only if the attachments has been uploaded
+                    if (!string.IsNullOrEmpty(resumePath))
+                    {
+                        // remove old resume document
+                        if (!string.IsNullOrEmpty(obj.Resume) && !obj.Resume.Contains(practiceModel.Resume.FileName) && File.Exists(obj.Resume))
+                            File.Delete(obj.Resume);
+
+                        obj.Resume = resumePath;
+                    }
+
+                    if (!string.IsNullOrEmpty(coverPath))
+                    {
+                        // remove old cover letter document
+                        if (!string.IsNullOrEmpty(obj.CoverLetter) && !obj.CoverLetter.Contains(practiceModel.CoverLetter.FileName) && File.Exists(obj.CoverLetter))
+                            File.Delete(obj.CoverLetter);
+
+                        obj.CoverLetter = coverPath;
+                    }
+
                     await spinContext.SaveChangesAsync();
                     return 2;
                 }
@@ -74,6 +120,13 @@ namespace Spinfluence.Services
                     AccountId = account.Id
                 };
 
+                if (!string.IsNullOrEmpty(resumePath))
+                    practice.Resume = resumePath;
+
+                if (!string.IsNullOrEmpty(coverPath))
+                    practice.CoverLetter = coverPath;
+
+                // save new practice entity
                 spinContext.Practice.Add(practice);
                 await spinContext.SaveChangesAsync();
                 return 1;
