@@ -149,26 +149,31 @@ namespace Spinfluence.Services
 
         public void SendEmail(string to, string subject, string body)
         {
-            string server = setup.host;
-            int port = int.Parse(setup.port);
+            try
+            {
+                string server = setup.host;
+                int port = int.Parse(setup.port);
 
-            string client = setup.client;
-            string secret = setup.secret;
+                string client = setup.client;
+                string secret = setup.secret;
 
-            SmtpClient host = new SmtpClient(server, port);
-            host.EnableSsl = true;
-            host.UseDefaultCredentials = false;
-            host.Credentials = new NetworkCredential(client, secret);
+                SmtpClient host = new SmtpClient(server, port);
+                host.EnableSsl = true;
+                host.UseDefaultCredentials = false;
+                host.Credentials = new NetworkCredential(client, secret);
 
-            MailMessage mail = new MailMessage();
-            string data = $"<html><body><p>{body}</p></body></html>";
+                MailMessage mail = new MailMessage();
+                string data = $"<html><body><p>{body}</p></body></html>";
 
-            mail.To.Add(to);
-            mail.Subject = subject;
-            mail.From = new MailAddress(client);
-            mail.Body = data;
-            mail.IsBodyHtml = true;
-            host.Send(mail);
+                mail.To.Add(to);
+                mail.Subject = subject;
+                mail.From = new MailAddress(client);
+                mail.Body = data;
+                mail.IsBodyHtml = true;
+                host.Send(mail);
+            }
+            catch (Exception)
+            { }
         }
 
         public string DecryptString(string data)
