@@ -29,3 +29,20 @@ body {
 .note-editable {
     height: 180px;
 }
+
+.require:before {
+    content: "*";
+    color: red;
+}
+
+#upload {
+    background-color: indigo;
+    color: white;
+    padding: 0.5rem;
+    font-family: sans-serif;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-left: -70%;
+    margin-top: 5%;
+    transform: scale(.8);
+}
