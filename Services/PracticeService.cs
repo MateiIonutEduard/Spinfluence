@@ -2,6 +2,7 @@
 using Spinfluence.Data;
 using Spinfluence.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.StaticFiles;
 #pragma warning disable
 
 namespace Spinfluence.Services
@@ -12,6 +13,40 @@ namespace Spinfluence.Services
 
         public PracticeService(SpinContext spinContext)
         { this.spinContext = spinContext; }
+
+        public string GetContentType(string filePath)
+        {
+            const string DefaultContentType = "application/octet-stream";
+            var provider = new FileExtensionContentTypeProvider();
+
+            // get MIME content type of specified file
+            if (!provider.TryGetContentType(filePath, out string contentType))
+                contentType = DefaultContentType;
+
+            return contentType;
+        }
+
+        public async Task<string> GetPracticeAsync(int id, string? type)
+        {
+            Practice practice = await spinContext.Practice
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if(practice != null)
+            {
+                // load document by type
+                if(type != null)
+                {
+                    if (type.CompareTo("resume") == 0)
+                        return practice.Resume;
+                    else
+                        return practice.CoverLetter;
+                }
+
+                return string.Empty;
+            }
+
+            return null;
+        }
 
         public async Task<PracticeEventModel[]> GetPracticesAsync(string token)
         {

@@ -18,6 +18,16 @@ namespace Spinfluence.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Show(int id, string? type)
+        {
+            string path = await practiceService.GetPracticeAsync(id, type);
+            int index = path.LastIndexOf('.');
+
+            string ext = path.Substring(index + 1);
+            byte[] buffer = System.IO.File.ReadAllBytes(path);
+            return File(buffer, practiceService.GetContentType(path));
+        }
+
         public async Task<IActionResult> AddPractice(PracticeModel practiceModel)
         {
             string? token = Request.Cookies["token"];
