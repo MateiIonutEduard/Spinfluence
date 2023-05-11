@@ -25,3 +25,7 @@ body {
 .footer {
     background-color: #9c89c1;
 }
+
+.note-editable {
+    height: 180px;
+}

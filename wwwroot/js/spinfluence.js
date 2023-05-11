@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     $('#description').summernote();
+    $('#Body').summernote();
 });
 
 var list = new Array();
