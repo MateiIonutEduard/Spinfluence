@@ -28,6 +28,7 @@
                             <th>Descriere</th>
                             <th>Perioada</th>
                             <th>Locuri disponibile</th>
+                            <th>Aprobare</th>
                             <th>Atasamente</th>
                             <th>Actiuni</th>
                         </tr>
@@ -41,6 +42,23 @@
                                 <td>@Html.Raw(practiceEvent.Body)</td>
                                 <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
                                 <td><center>@practiceEvent.Seats</center></td>
+                                <td>
+                                    @if(practiceEvent.IsApproved != null)
+                                    {
+                                        if(practiceEvent.IsApproved.Value)
+                                        {
+                                            <span title="Aprobata" style="margin-left: 30%; margin-top: 20%;" class="fa fa-check text-success"></span>
+                                        }
+                                        else
+                                        {
+                                            <span title="Respinsa" style="margin-left: 30%; margin-top: 20%;" class="fa fa-times text-danger"></span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span title="In asteptare" style="color: #ffff5c; margin-left: 30%; margin-top: 20%;" class="fas fa-clock"></span>
+                                    }
+                                </td>
                                 <td>
                                     @if (string.IsNullOrEmpty(practiceEvent.Resume) && string.IsNullOrEmpty(practiceEvent.CoverLetter))
                                     {

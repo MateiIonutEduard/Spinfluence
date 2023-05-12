@@ -72,6 +72,7 @@ namespace Spinfluence.Services
                         Seats = e.Seats - counter,
                         Resume = p.Resume,
                         CoverLetter = p.CoverLetter,
+                        IsApproved = p.IsApproved,
                         CompanyName = c.Name,
                         EndDate = e.EndDate,
                         Body = p.Body,
