@@ -10,6 +10,7 @@ namespace Spinfluence.Data
         public string Body { get; set; }
         public string? Resume { get; set; }
         public string? CoverLetter { get; set; }
+        public bool? IsApproved { get; set; }
         public bool IsCanceled { get; set; }
 
         public int AccountId { get; set; }
