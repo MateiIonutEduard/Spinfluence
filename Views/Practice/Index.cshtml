@@ -20,6 +20,27 @@
         <div class="col-10">
             @if (n > 0)
             {
+                <div class="row">
+                    <div class="col-3">
+                        <input type="text" placeholder="Nume Eveniment" id="EventName" name="EventName" class="form-control form-control-sm"/>
+                    </div>
+                    <div class="col-3">
+                        @Html.CheckBox("IsCanceled", false)
+                        <label for="IsCanceled">Anulata</label>
+                    </div>
+                    <div class="col-3">
+                        <select class="form-select form-select-sm" id="PracticeStatus" name="PracticeStatus" aria-label="In asteptare">
+                            <option value="1" selected>In asteptare</option>
+                            <option value="2">Aprobata</option>
+                            <option value="2">Respinsa</option>
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <button id="searchEvents" type="submit" class="btn btn-primary btn-sm">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div><br/>
                 <table class="table table-hover">
                     <thead style="background-color: #668cc3; color: white;">
                         <tr>
@@ -56,7 +77,7 @@
                                     }
                                     else
                                     {
-                                        <span title="In asteptare" style="color: #ffff5c; margin-left: 30%; margin-top: 20%;" class="fas fa-clock"></span>
+                                        <span title="In asteptare" style="color: #315c9d; margin-left: 30%; margin-top: 20%;" class="fas fa-clock"></span>
                                     }
                                 </td>
                                 <td>

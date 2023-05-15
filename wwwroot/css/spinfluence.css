@@ -34,3 +34,15 @@ body {
     content: "*";
     color: red;
 }
+
+#searchEvents {
+    margin-left: 75%;
+}
+
+#PracticeStatus {
+    margin-left: 45%;
+}
+
+#IsCanceled {
+    margin-left: 45%;
+}
