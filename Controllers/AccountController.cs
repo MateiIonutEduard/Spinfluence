@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Spinfluence.Models;
 using Spinfluence.Services;
 using Spinfluence.Data;
+#pragma warning disable
 
 namespace Spinfluence.Controllers
 {
@@ -66,6 +67,16 @@ namespace Spinfluence.Controllers
         {
             var data = accountService.About(token);
             return Json(data);
+        }
+
+        public async Task<IActionResult> Profile(int userId)
+        {
+            Account? account = await accountService.GetAccountProfileAsync(userId);
+            int index = account.logo.LastIndexOf('.');
+
+            string ext = account.logo.Substring(index + 1);
+            byte[] buffer = System.IO.File.ReadAllBytes(account.logo);
+            return File(buffer, $"image/{ext}");
         }
 
         public IActionResult Show()

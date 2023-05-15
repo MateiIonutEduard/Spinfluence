@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using Spinfluence.Data;
 using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 
 namespace Spinfluence.Services
 {
@@ -25,6 +26,14 @@ namespace Spinfluence.Services
             salt = Convert.FromBase64String(this.Configuration["AppSettings:salt"]);
             this.setup = setup;
             this.db = db;
+        }
+
+        public async Task<Account?> GetAccountProfileAsync(int userId)
+        {
+            Account? account = await db.Account
+                .FirstOrDefaultAsync(e => e.Id == userId);
+
+            return account;
         }
 
         public async Task<string> Login(string address, string password)

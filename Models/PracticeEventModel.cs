@@ -4,9 +4,10 @@ namespace Spinfluence.Models
 {
     public class PracticeEventModel
     {
+        public int? AccountId { get; set; }
+        public string? ApplicantName { get; set; }
         public int PracticeId { get; set; }
         public string Body { get; set; }
-
         public string Name { get; set; }
         public DateTime BeginDate { get; set; }
         public string Resume { get; set; }

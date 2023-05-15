@@ -48,6 +48,60 @@ namespace Spinfluence.Services
             return null;
         }
 
+        public async Task<PracticeEventModel[]> GetNotificationsAsync(PracticeEventSearchFilter? filter)
+        {
+            var list = new List<PracticeEventModel>();
+            List<Practice>? practices = await spinContext.Practice.ToListAsync();
+
+            PracticeEventModel[] events = (
+                from p in practices
+                join e in await spinContext.CompanyEvent.ToListAsync() on p.CompanyEventId equals e.Id
+                join c in await spinContext.Company.ToListAsync()
+                on e.CompanyId equals c.Id
+                let counter = (from pr in spinContext.Practice.ToList() where pr.CompanyEventId == e.Id select pr).Count()
+                let account = (from a in spinContext.Account.ToList() where a.Id == p.AccountId select a).FirstOrDefault()
+                select new PracticeEventModel
+                {
+                    AccountId = account.Id,
+                    ApplicantName = account.username,
+                    Name = e.Name,
+                    PracticeId = p.Id,
+                    BeginDate = e.BeginDate,
+                    Seats = e.Seats - counter,
+                    Resume = p.Resume,
+                    CoverLetter = p.CoverLetter,
+                    IsApproved = p.IsApproved,
+                    IsCanceled = p.IsCanceled,
+                    CompanyName = c.Name,
+                    EndDate = e.EndDate,
+                    Body = p.Body,
+                }).ToArray();
+
+            if (filter != null && events.Length > 0)
+            {
+                // filter by specific practice event name, practice acceptation status and cancellation
+                string filterPracticeName = !string.IsNullOrEmpty(filter.EventName) ? filter.EventName.ToLower() : null;
+
+                for (int k = 0; k < events.Length; k++)
+                {
+                    bool isCanceled = events[k].IsCanceled == filter.IsCanceled;
+                    int approveStatus = events[k].IsApproved != null ? (events[k].IsApproved.Value ? 2 : 3) : 1;
+                    string practiceName = events[k].Name.ToLower();
+
+                    if (!string.IsNullOrEmpty(filterPracticeName) && practiceName.StartsWith(filterPracticeName) && approveStatus == filter.PracticeStatus && isCanceled)
+                        list.Add(events[k]);
+                }
+            }
+            else
+            {
+                // filter not applied
+                if (practices != null)
+                    list.AddRange(events);
+            }
+
+            return list.ToArray();
+        }
+
         public async Task<PracticeEventModel[]> GetPracticesAsync(PracticeEventSearchFilter? filter, string token)
         {
             var list = new List<PracticeEventModel>();

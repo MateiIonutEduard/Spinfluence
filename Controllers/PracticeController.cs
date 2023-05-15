@@ -18,6 +18,11 @@ namespace Spinfluence.Controllers
             return View();
         }
 
+        public IActionResult Notifications()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchPractice(PracticeEventSearchFilter practiceEventSearchFilter)
         {

@@ -1,0 +1,148 @@
+﻿@using Spinfluence.Data;
+@using Spinfluence.Services;
+@inject IPracticeService practiceService;
+
+@{
+    string? token = Context.Request.Cookies["token"];
+    PracticeEventModel[] practiceEventList = new PracticeEventModel[0];
+    PracticeEventSearchFilter? filter = ViewData["filter"] as PracticeEventSearchFilter;
+
+    if (!string.IsNullOrEmpty(token))
+        practiceEventList = await practiceService.GetNotificationsAsync(filter);
+
+    int n = practiceEventList.Length;
+    ViewData["Title"] = "Notificari";
+}
+
+<section>
+    <br /><br /><br /><br />
+    <div class="row">
+        <div class="col-12">
+            @if (n > 0)
+            {
+                <form action="/Practice/SearchPractice" method="post">
+                    <div class="row">
+                        <div class="col-3">
+                            <input type="text" placeholder="Nume Eveniment" id="EventName" name="EventName" class="form-control form-control-sm" />
+                        </div>
+                        <div class="col-3">
+                            @Html.CheckBox("IsCanceled", false)
+                            <label for="IsCanceled">Anulata</label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-select-sm" id="PracticeStatus" name="PracticeStatus" aria-label="In asteptare">
+                                <option value="1" selected>In asteptare</option>
+                                <option value="2">Aprobata</option>
+                                <option value="3">Respinsa</option>
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <button id="searchEvents" type="submit" class="btn btn-primary btn-sm">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                @if (filter != null)
+                {
+                    <br />
+                    <div class="alert alert-warning" style="height: 55px; width: 97%;">
+                        <p style="font-weight: bold;"><a href="/Practice/" onmouseover="OverFilter()" onmouseout="OnFilterOut()"><i id="filterIcon" style="color: #DC4C64;" class="fa fa-times-circle" aria-hidden="true"></i></a>&nbsp;Eliminati toate filtrele...</p>
+                    </div>
+                }
+                <br />
+                <table class="table table-hover">
+                    <thead style="background-color: #668cc3; color: white;">
+                        <tr>
+                            <th>Aplicant</th>
+                            <th>Numele Evenimentului</th>
+                            <th>Numele Companiei</th>
+                            <th>Descriere</th>
+                            <th>Perioada</th>
+                            <th>Locuri disponibile</th>
+                            <th>Aprobare</th>
+                            <th>Atasamente</th>
+                            <th>Actiuni</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: #abc1e1;">
+                        @foreach (var practiceEvent in practiceEventList)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <img src="/Account/Profile/?userId=@practiceEvent.AccountId" width="28" height="28" style="border-radius: 50%;" />
+                                        </div>
+                                        <div class="col-4">
+                                            <b style="color: #3b444b;">&nbsp;&nbsp;@practiceEvent.ApplicantName</b>
+                                        </div>
+                                        <div class="col-4"></div>
+                                    </div>
+                                </td>
+                                <td>@practiceEvent.Name</td>
+                                <td>@practiceEvent.CompanyName</td>
+                                <td>@Html.Raw(practiceEvent.Body)</td>
+                                <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
+                                <td><center>@practiceEvent.Seats</center></td>
+                                <td>
+                                    @if (practiceEvent.IsApproved != null)
+                                    {
+                                        if (practiceEvent.IsApproved.Value)
+                                        {
+                                            <span title="Aprobata" style="margin-left: 30%; margin-top: 20%;" class="fa fa-check text-success"></span>
+                                        }
+                                        else
+                                        {
+                                            <span title="Respinsa" style="margin-left: 30%; margin-top: 20%;" class="fa fa-times text-danger"></span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span title="In asteptare" style="color: #315c9d; margin-left: 30%; margin-top: 20%;" class="fas fa-clock"></span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (string.IsNullOrEmpty(practiceEvent.Resume) && string.IsNullOrEmpty(practiceEvent.CoverLetter))
+                                    {
+                                        <span title="Nu exista atasamente" style="margin-left: 30%; margin-top: 10%;" class="fa fa-times text-danger"></span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(practiceEvent.Resume))
+                                    {
+                                        <small>
+                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEvent.PracticeId&type=resume">@practiceEvent.Resume.Substring(practiceEvent.Resume.LastIndexOf("/") + 1)</a>
+                                        </small>
+                                    }<br />
+                                    @if (!string.IsNullOrEmpty(practiceEvent.CoverLetter))
+                                    {
+                                        <small>
+                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEvent.PracticeId&type=coverLetter">@practiceEvent.CoverLetter.Substring(practiceEvent.CoverLetter.LastIndexOf("/") + 1)</a>
+                                        </small>
+                                    }
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" onclick="RemovePractice(@practiceEvent.PracticeId)">
+                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="d-flex align-items-center justify-content-center vh-100">
+                    <div class="text-center">
+                        <h1 class="display-1 fw-bold">404</h1>
+                        <p class="fs-3"> <span class="text-danger">Ups!</span> Nu aveti notificari noi pentru cererile aplicantilor.</p>
+                        <p class="lead">
+                            Momentan nu sunt disponibile cereri ale aplicantilor.
+                        </p>
+                        <a href="/Home/" class="btn btn-primary">Acasa</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
