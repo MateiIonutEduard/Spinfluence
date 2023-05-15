@@ -12,6 +12,7 @@ namespace Spinfluence.Models
         public string Resume { get; set; }
         public string CoverLetter { get; set; }
         public bool? IsApproved { get; set; }
+        public bool IsCanceled { get; set; }
         public DateTime EndDate { get; set; }
         public string CompanyName { get; set; }
         public int Seats { get; set; }

@@ -5,9 +5,10 @@
 @{
     string? token = Context.Request.Cookies["token"];
     PracticeEventModel[] practiceEventList = new PracticeEventModel[0];
+    PracticeEventSearchFilter? filter = ViewData["filter"] as PracticeEventSearchFilter;
 
     if(!string.IsNullOrEmpty(token))
-        practiceEventList = await practiceService.GetPracticesAsync(token);
+        practiceEventList = await practiceService.GetPracticesAsync(filter, token);
 
     int n = practiceEventList.Length;
     ViewData["Title"] = "Stagiile mele";
@@ -20,6 +21,7 @@
         <div class="col-10">
             @if (n > 0)
             {
+                <form action="/Practice/SearchPractice" method="post">
                 <div class="row">
                     <div class="col-3">
                         <input type="text" placeholder="Nume Eveniment" id="EventName" name="EventName" class="form-control form-control-sm"/>
@@ -32,7 +34,7 @@
                         <select class="form-select form-select-sm" id="PracticeStatus" name="PracticeStatus" aria-label="In asteptare">
                             <option value="1" selected>In asteptare</option>
                             <option value="2">Aprobata</option>
-                            <option value="2">Respinsa</option>
+                            <option value="3">Respinsa</option>
                         </select>
                     </div>
                     <div class="col-3">
@@ -40,7 +42,9 @@
                             <i class="fa fa-search" aria-hidden="true"></i>
                         </button>
                     </div>
-                </div><br/>
+                </div>
+                </form>
+                <br />
                 <table class="table table-hover">
                     <thead style="background-color: #668cc3; color: white;">
                         <tr>

@@ -18,6 +18,13 @@ namespace Spinfluence.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SearchPractice(PracticeEventSearchFilter practiceEventSearchFilter)
+        {
+            ViewData["filter"] = practiceEventSearchFilter;
+            return View($"Views/Practice/Index.cshtml", ViewData["filter"]);
+        }
+
         public async Task<IActionResult> Show(int id, string? type)
         {
             string path = await practiceService.GetPracticeAsync(id, type);
