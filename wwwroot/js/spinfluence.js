@@ -3,6 +3,14 @@
     $('#Body').summernote();
 });
 
+function OverFilter() {
+    $('#filterIcon').css('color', '#ff748b');
+}
+
+function OnFilterOut() {
+    $('#filterIcon').css('color', '#DC4C64');
+}
+
 var list = new Array();
 
 function GoHome() {
