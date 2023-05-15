@@ -149,7 +149,7 @@ namespace Spinfluence.Services
 
             if(account != null)
             {
-                List<Practice>? practices = await spinContext.Practice.Where(p => p.AccountId == account.Id && !p.IsCanceled)
+                List<Practice>? practices = await spinContext.Practice.Where(p => p.AccountId == account.Id)
                     .ToListAsync();
 
                 PracticeEventModel[] events = (
@@ -182,8 +182,17 @@ namespace Spinfluence.Services
                         int approveStatus = events[k].IsApproved != null ? (events[k].IsApproved.Value ? 2 : 3) : 1;
                         string practiceName = events[k].Name.ToLower();
 
-                        if (!string.IsNullOrEmpty(filterPracticeName) && practiceName.StartsWith(filterPracticeName) && approveStatus == filter.PracticeStatus && isCanceled)
-                            list.Add(events[k]);
+                        /* fix practice event list filter */
+                        if (!string.IsNullOrEmpty(filterPracticeName))
+                        {
+                            if(practiceName.StartsWith(filterPracticeName) && approveStatus == filter.PracticeStatus && isCanceled)
+                                list.Add(events[k]);
+                        }
+                        else
+                        {
+                            if(approveStatus == filter.PracticeStatus && isCanceled)
+                                list.Add(events[k]);
+                        }
                     }
                 }
                 else
