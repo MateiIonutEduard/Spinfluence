@@ -116,8 +116,18 @@ namespace Spinfluence.Services
                     int approveStatus = events[k].IsApproved != null ? (events[k].IsApproved.Value ? 2 : 3) : 1;
                     string practiceName = events[k].Name.ToLower();
 
-                    if (!string.IsNullOrEmpty(filterPracticeName) && practiceName.StartsWith(filterPracticeName) && approveStatus == filter.PracticeStatus && isCanceled)
-                        list.Add(events[k]);
+                    // if have practice name not null
+                    if (!string.IsNullOrEmpty(filterPracticeName))
+                    {
+                        if (practiceName.StartsWith(filterPracticeName) && approveStatus == filter.PracticeStatus && isCanceled)
+                            list.Add(events[k]);
+                    }
+                    else
+                    {
+                        /* that's not working properly in the past */
+                        if (approveStatus == filter.PracticeStatus && isCanceled)
+                            list.Add(events[k]);
+                    }
                 }
             }
             else
