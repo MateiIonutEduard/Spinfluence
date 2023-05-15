@@ -3,6 +3,7 @@
 @inject IPracticeService practiceService;
 
 @{
+    #pragma warning disable
     string? token = Context.Request.Cookies["token"];
     PracticeEventModel[] practiceEventList = new PracticeEventModel[0];
     PracticeEventSearchFilter? filter = ViewData["filter"] as PracticeEventSearchFilter;
@@ -66,29 +67,29 @@
                         </tr>
                     </thead>
                     <tbody style="background-color: #abc1e1;">
-                        @foreach (var practiceEvent in practiceEventList)
+                        @for(int k = 0; k < practiceEventList.Length; k++)
                         {
                             <tr>
                                 <td>
                                     <div class="row">
                                         <div class="col-2">
-                                            <img src="/Account/Profile/?userId=@practiceEvent.AccountId" width="28" height="28" style="border-radius: 50%;" />
+                                            <img src="/Account/Profile/?userId=@practiceEventList[k].AccountId" width="28" height="28" style="border-radius: 50%;" />
                                         </div>
                                         <div class="col-4">
-                                            <b style="color: #3b444b;">&nbsp;&nbsp;@practiceEvent.ApplicantName</b>
+                                            <b style="color: #3b444b;">&nbsp;&nbsp;@practiceEventList[k].ApplicantName</b>
                                         </div>
                                         <div class="col-4"></div>
                                     </div>
                                 </td>
-                                <td>@practiceEvent.Name</td>
-                                <td>@practiceEvent.CompanyName</td>
-                                <td>@Html.Raw(practiceEvent.Body)</td>
-                                <td><small>@($"{practiceEvent.BeginDate.ToString("dd/MM/yyyy")} -> {practiceEvent.EndDate.ToString("dd/MM/yyyy")}")</small></td>
-                                <td><center>@practiceEvent.Seats</center></td>
+                                <td>@practiceEventList[k].Name</td>
+                                <td>@practiceEventList[k].CompanyName</td>
+                                <td>@Html.Raw(practiceEventList[k].Body)</td>
+                                <td><small>@($"{practiceEventList[k].BeginDate.ToString("dd/MM/yyyy")} -> {practiceEventList[k].EndDate.ToString("dd/MM/yyyy")}")</small></td>
+                                <td><center>@practiceEventList[k].Seats</center></td>
                                 <td>
-                                    @if (practiceEvent.IsApproved != null)
+                                    @if (practiceEventList[k].IsApproved != null)
                                     {
-                                        if (practiceEvent.IsApproved.Value)
+                                        if (practiceEventList[k].IsApproved.Value)
                                         {
                                             <span title="Aprobata" style="margin-left: 30%; margin-top: 20%;" class="fa fa-check text-success"></span>
                                         }
@@ -103,60 +104,60 @@
                                     }
                                 </td>
                                 <td>
-                                    @if (string.IsNullOrEmpty(practiceEvent.Resume) && string.IsNullOrEmpty(practiceEvent.CoverLetter))
+                                    @if (string.IsNullOrEmpty(practiceEventList[k].Resume) && string.IsNullOrEmpty(practiceEventList[k].CoverLetter))
                                     {
                                         <span title="Nu exista atasamente" style="margin-left: 30%; margin-top: 10%;" class="fa fa-times text-danger"></span>
                                     }
-                                    @if (!string.IsNullOrEmpty(practiceEvent.Resume))
+                                    @if (!string.IsNullOrEmpty(practiceEventList[k].Resume))
                                     {
                                         <small>
-                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEvent.PracticeId&type=resume">@practiceEvent.Resume.Substring(practiceEvent.Resume.LastIndexOf("/") + 1)</a>
+                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEventList[k].PracticeId&type=resume">@practiceEventList[k].Resume.Substring(practiceEventList[k].Resume.LastIndexOf("/") + 1)</a>
                                         </small>
                                     }<br />
-                                    @if (!string.IsNullOrEmpty(practiceEvent.CoverLetter))
+                                    @if (!string.IsNullOrEmpty(practiceEventList[k].CoverLetter))
                                     {
                                         <small>
-                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEvent.PracticeId&type=coverLetter">@practiceEvent.CoverLetter.Substring(practiceEvent.CoverLetter.LastIndexOf("/") + 1)</a>
+                                            <a style="text-decoration: none;" href="/Practice/Show/?id=@practiceEventList[k].PracticeId&type=coverLetter">@practiceEventList[k].CoverLetter.Substring(practiceEventList[k].CoverLetter.LastIndexOf("/") + 1)</a>
                                         </small>
                                     }
                                 </td>
                                 <td>
-                                    @if(practiceEvent.IsApproved != null && !practiceEvent.IsCanceled)
+                                    @if (practiceEventList[k].IsApproved != null && !practiceEventList[k].IsCanceled)
                                     {
-                                        if(practiceEvent.IsApproved.Value)
+                                        if (practiceEventList[k].IsApproved.Value)
                                         {
-                                            <span><i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;Acceptat</span>
+                                            <small style="margin-left: 15%;"><i class="fa fa-check text-success" aria-hidden="true"></i>&nbsp;Acceptat</small>
                                         }
                                         else
                                         {
-                                            <span><i class="fa fa-times text-danger" aria-hidden="true"></i>&nbsp;Respins</span>
+                                            <small style="margin-left: 15%;"><i class="fa fa-times text-danger" aria-hidden="true"></i>&nbsp;Respins</small>
                                         }
                                     }
-                                    @if(practiceEvent.IsCanceled)
+                                    @if (practiceEventList[k].IsCanceled)
                                     {
-                                        <span style="color: #5c3939;"><i class="fa fa-ban" style="color: #ab7474;" aria-hidden="true"></i>&nbsp;Anulat</span>
+                                        <small style="color: #5c3939; margin-left: 15%;"><i class="fa fa-ban" style="color: #ab7474;" aria-hidden="true"></i>&nbsp;Anulat</small>
                                     }
-                                    @if (practiceEvent.IsApproved == null && !practiceEvent.IsCanceled)
+                                    @if (practiceEventList[k].IsApproved == null && !practiceEventList[k].IsCanceled)
                                     {
                                         <div class="row">
                                             <div class="col-1"></div>
                                             <div class="col-4">
-                                                <button title="Acceptati" class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" data-bs-toggle="modal" data-bs-target="#approvePracticeModal">
+                                                <button title="Acceptati" id="approveButton_@(k + 1)" class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" data-bs-toggle="modal" data-bs-target="#approvePracticeModal_@(k + 1)">
                                                     <i class="fa fa-check text-success" aria-hidden="true"></i>
                                                 </button>
                                             </div>
                                             <div class="col-4">
-                                                <button title="Respingeti" class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" data-bs-toggle="modal" data-bs-target="#rejectPracticeModal">
+                                                <button title="Respingeti" id="rejectButton_@(k + 1)" class="btn btn-sm" style="background-color: #abc1e1; border-radius: 50%; margin-left: 10%;" data-bs-toggle="modal" data-bs-target="#rejectPracticeModal_@(k + 1)">
                                                     <i class="fa fa-times text-danger" aria-hidden="true"></i>
                                                 </button>
                                             </div>
                                             <div class="col-3"></div>
                                         </div>
-                                        <div class="modal fade" id="approvePracticeModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="approvePracticeModal_@(k + 1)" tabindex="-1" aria-labelledby="approveModalLabel_@(k + 1)" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="approveModalLabel">Aprobare Cerere</h5>
+                                                        <h5 class="modal-title" id="approveModalLabel_@(k + 1)">Aprobare Cerere</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -167,7 +168,7 @@
                                                             <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Anulare
                                                         </button>
                                                         <form action="/Practice/ApprovePractice/" method="post">
-                                                            <input type="hidden" id="id" name="id" value="@practiceEvent.PracticeId" />
+                                                            <input type="hidden" id="id" name="id" value="@practiceEventList[k].PracticeId" />
                                                             <input type="hidden" id="IsApproved" name="IsApproved" value="true"/>
                                                             <button class="btn btn-sm btn-danger" type="submit" title="Aproba Cererea">
                                                                 <i class="fa fa-bell" style="color: white;" aria-hidden="true"></i>&nbsp;Aprobati
@@ -177,11 +178,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal fade" id="rejectPracticeModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="rejectPracticeModal_@(k + 1)" tabindex="-1" aria-labelledby="rejectModalLabel_@(k + 1)" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="rejectModalLabel">Respinge Cerere</h5>
+                                                        <h5 class="modal-title" id="rejectModalLabel_@(k + 1)">Respinge Cerere</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -192,7 +193,7 @@
                                                             <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Anulare
                                                         </button>
                                                         <form action="/Practice/ApprovePractice/" method="post">
-                                                            <input type="hidden" id="id" name="id" value="@practiceEvent.PracticeId" />
+                                                            <input type="hidden" id="id" name="id" value="@practiceEventList[k].PracticeId" />
                                                             <input type="hidden" id="IsApproved" name="IsApproved" value="false" />
                                                             <button class="btn btn-sm btn-danger" type="submit" title="Respinge Cererea">
                                                                 <i class="fa fa-bell" style="color: white;" aria-hidden="true"></i>&nbsp;Respinge
