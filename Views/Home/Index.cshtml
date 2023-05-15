@@ -91,7 +91,7 @@
                                     <a class="btn btn-success btn-sm" style="margin-left: 10%; margin-top: 6%; border-radius: 50%;" href="/Home/About/?id=@company.Id">
                                         <i class="fa fa-eye" style="color: #d8befb;" aria-hidden="true"></i>
                                     </a>
-                                    @if(obj != null && obj!.admin)
+                                    @if (obj != null && obj!.GrantType > 2)
                                     {
                                         <a class="btn btn-sm" style="margin-top: 6%; border-radius: 50%; background-color: steelblue;" href="/Home/Edit/?id=@company.Id">
                                             <i class="fas fa-edit" style="color: #d8befb;" aria-hidden="true"></i>

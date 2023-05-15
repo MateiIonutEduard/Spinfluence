@@ -7,7 +7,7 @@
         buffer.append('address', $("#address").val());
 
         buffer.append('logo', $('#logo').get(0).files[0]);
-        buffer.append('admin', $('#admin').prop("checked"));
+        buffer.append('grantType', document.getElementById("grantType").value);
 
         $.ajax({
             url: '/Account/Signup',

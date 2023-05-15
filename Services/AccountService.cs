@@ -42,7 +42,7 @@ namespace Spinfluence.Services
             return token;
         }
 
-        public async Task<string> Signup(string username, string password, string address, IFormFile logo, bool admin)
+        public async Task<string> Signup(string username, string password, string address, IFormFile logo, int grantType)
         {
             var exists = db.Account.Where(u => u.username == username || u.address == address)
         .FirstOrDefault();
@@ -64,7 +64,7 @@ namespace Spinfluence.Services
                 password = EncryptString(password),
                 address = address,
                 logo = url,
-                admin = admin
+                GrantType = grantType
             };
 
             db.Account.Add(user);
@@ -96,7 +96,7 @@ namespace Spinfluence.Services
               Configuration["JwtSettings:Audience"],
               new Claim[] {
                   new Claim("email", account.address),
-                  new Claim("admin", account.admin ? "true" : "false")
+                  new Claim("admin", account.GrantType.ToString())
               },
               expires: DateTime.Now.AddMinutes(2),
               signingCredentials: credentials);
@@ -111,7 +111,7 @@ namespace Spinfluence.Services
             {
                 user.username,
                 path = user.logo,
-                user.admin
+                user.GrantType
             };
         }
 

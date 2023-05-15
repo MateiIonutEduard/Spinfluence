@@ -46,9 +46,9 @@ namespace Spinfluence.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Signup(string username, string password, string address, IFormFile logo, bool admin)
+        public async Task<IActionResult> Signup(string username, string password, string address, IFormFile logo, [FromForm]int grantType)
         {
-            string token = await accountService.Signup(username, password, address, logo, admin);
+            string token = await accountService.Signup(username, password, address, logo, grantType);
             if (string.IsNullOrEmpty(token)) return Unauthorized(new { error = "User already exists!" });
             Response.Cookies.Append("token", token);
             return Ok();

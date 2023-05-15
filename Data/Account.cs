@@ -24,6 +24,6 @@ namespace Spinfluence.Data
         [ForeignKey("AccountId")]
         public virtual ICollection<Practice> Practices { get; set; }
 
-        public bool admin { get; set; }
+        public int GrantType { get; set; }
     }
 }

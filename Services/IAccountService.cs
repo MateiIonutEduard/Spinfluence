@@ -3,7 +3,7 @@
     public interface IAccountService
     {
         Task<string> Login(string address, string password);
-        Task<string> Signup(string username, string password, string address, IFormFile logo, bool admin);
+        Task<string> Signup(string username, string password, string address, IFormFile logo, int grantType);
         Task<string> RefreshToken(string token);
         dynamic About(string token);
         bool Recover(string address);
