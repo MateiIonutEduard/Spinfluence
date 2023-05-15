@@ -48,6 +48,34 @@ namespace Spinfluence.Services
             return null;
         }
 
+        public async Task<int> ApprovePracticeAsync(string token, int id, bool IsApproved)
+        {
+            Account? account = await spinContext.Account
+                .FirstOrDefaultAsync(e => e.token.CompareTo(token) == 0);
+
+            // check if account has rights
+            if(account != null && account.GrantType == 2)
+            {
+                /* get specific practice */
+                Practice? practice = await spinContext.Practice
+                    .FirstOrDefaultAsync(e => e.Id == id);
+
+                /* verify if applicant practice is on pending */
+                if(practice != null && !practice.IsCanceled && practice.IsApproved == null)
+                {
+                    // if yes update practice
+                    practice.IsApproved = IsApproved;
+                    await spinContext.SaveChangesAsync();
+                    return 1;
+                }
+
+                // practice is not in pending
+                return 0;
+            }
+
+            return -1;
+        }
+
         public async Task<PracticeEventModel[]> GetNotificationsAsync(PracticeEventSearchFilter? filter)
         {
             var list = new List<PracticeEventModel>();

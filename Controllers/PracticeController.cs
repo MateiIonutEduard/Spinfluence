@@ -49,6 +49,28 @@ namespace Spinfluence.Controllers
             return Redirect("/Account/Login");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> SearchNotifications(PracticeEventSearchFilter practiceEventSearchFilter)
+        {
+            ViewData["filter"] = practiceEventSearchFilter;
+            return View($"Views/Practice/Notifications.cshtml", ViewData["filter"]);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApprovePractice(int? id, bool IsApproved)
+        {
+            string? token = HttpContext.Request.Cookies["token"];
+
+            if (id != null)
+            {
+                /* update students practices */
+                await practiceService.ApprovePracticeAsync(token, id.Value, IsApproved);
+                return Redirect("/Practice/Notifications");
+            }
+            else
+                return Redirect("/Account/Login");
+        }
+
         [HttpDelete, Authorize]
         public async Task<IActionResult> RemovePractice(int? id)
         {
